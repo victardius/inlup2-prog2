@@ -1,15 +1,57 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
 import javax.swing.*;
 
 public class GUIMap extends JFrame {
 	
 	private Map<String, int[]> locations = new HashMap<>();
+	private JPanel mapPanel = new JPanel();
 	
 	GUIMap(){
 		//TO-DO: Everything (layout) kartan ska finnas här
+		JPanel north = new JPanel();
+		add(north, BorderLayout.NORTH);
+		JButton newButton = new JButton("New");
+		north.add(newButton);
+		JRadioButton namedRadio = new JRadioButton("Named");
+		JRadioButton describedRadio = new JRadioButton("Described");
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(namedRadio);
+		bg.add(describedRadio);
+		Box verticalBox = new Box(BoxLayout.PAGE_AXIS);
+		verticalBox.add(namedRadio);
+		verticalBox.add(describedRadio);
+		north.add(verticalBox);
+		JTextField searchField = new JTextField("Search", 10);
+		north.add(searchField);
+		JButton searchButton = new JButton("Search");
+		north.add(searchButton);
+		JButton hideButton = new JButton("Hide");
+		north.add(hideButton);
+		JButton removeButton = new JButton("Remove");
+		north.add(removeButton);
+		JButton coordinatesButton = new JButton("Search");
+		north.add(coordinatesButton);
+		north.setPreferredSize(new Dimension(100, 100));
+		
+		JPanel mapArea = new JPanel();
+		add(mapArea, BorderLayout.CENTER);
+		
+		JPanel east = new JPanel();
+		add(east, BorderLayout.EAST);
+		east.setPreferredSize(new Dimension(200, 200));
+		Box eastLayout = new Box(BoxLayout.PAGE_AXIS);
+		east.add(eastLayout);
+		JLabel categoriesLabel = new JLabel("categories");
+		east.add(categoriesLabel);
+		
+		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setSize(1000,1000);
+		setLocationRelativeTo(null);
+		setVisible(true);
+		
 	}
 	
 	class newPositionListener implements ActionListener {
