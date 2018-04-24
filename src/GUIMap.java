@@ -11,8 +11,16 @@ public class GUIMap extends JFrame {
 	
 	GUIMap(){
 		//TO-DO: Everything (layout) kartan ska finnas här
+
+		Box divideNorth = new Box(BoxLayout.PAGE_AXIS);
+		add(divideNorth, BorderLayout.NORTH);
+		JPanel archive = new JPanel();
+		divideNorth.add(archive);
+		JLabel text = new JLabel("test");
+		archive.add(text);
+		archive.setBackground(new Color(150, 150, 150));
 		JPanel north = new JPanel();
-		add(north, BorderLayout.NORTH);
+		divideNorth.add(north);
 		JButton newButton = new JButton("New");
 		north.add(newButton);
 		JRadioButton namedRadio = new JRadioButton("Named");
@@ -34,7 +42,7 @@ public class GUIMap extends JFrame {
 		north.add(removeButton);
 		JButton coordinatesButton = new JButton("Search");
 		north.add(coordinatesButton);
-		north.setPreferredSize(new Dimension(100, 100));
+//		north.setPreferredSize(new Dimension(100, 100));
 		
 		JPanel mapArea = map;
 		JScrollPane scroll = new JScrollPane(mapArea);
@@ -48,7 +56,7 @@ public class GUIMap extends JFrame {
 		JLabel categoriesLabel = new JLabel("categories");
 		categoriesLabel.setHorizontalAlignment(categoriesLabel.CENTER);
 		eastLayout.add(categoriesLabel);
-		String[] cat = {"Bus", "Underground", "Train", "None"};
+		String[] cat = {"Bus", "Underground", "Train"};
 		JList<String> categoryList = new JList<String>(cat);
 		categoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		categoryList.setFixedCellWidth(150);
