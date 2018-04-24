@@ -3,9 +3,9 @@ public abstract class Location {
 	
 	private int[] coordinates = new int[2];
 	private String name;
-	private Category category;
+	private String category;
 
-	public Location(int coordinates[], String name, Category category){
+	public Location(int coordinates[], String name, String category){
 		this.coordinates = coordinates;
 		this.name = name;
 		this.category = category;
@@ -19,7 +19,7 @@ public abstract class Location {
 		return coordinates;
 	}
 	
-	public Category getCategory(){
+	public String getCategory(){
 		return category;
 	}
 	
