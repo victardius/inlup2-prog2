@@ -11,9 +11,9 @@ public class MarkersPlacement extends JComponent {
 		
 		}
 		
-	public void display(Graphics g) {
-		int [] xes = {0,25,50};
-		int [] yes = {50, 0, 50};
+	private void display(Graphics g) {
+		int [] xes = {50,25,0};
+		int [] yes = {0, 50, 0};
 		g.setColor(Color.GREEN);
 		g.fillPolygon(xes, yes, 3);
 	}
