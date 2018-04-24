@@ -42,12 +42,22 @@ public class GUIMap extends JFrame {
 		
 		JPanel east = new JPanel();
 		add(east, BorderLayout.EAST);
-		east.setPreferredSize(new Dimension(200, 200));
+//		east.setPreferredSize(new Dimension(200, 200));
 		Box eastLayout = new Box(BoxLayout.PAGE_AXIS);
 		east.add(eastLayout);
 		JLabel categoriesLabel = new JLabel("categories");
-		east.add(categoriesLabel);
-		
+		categoriesLabel.setHorizontalAlignment(categoriesLabel.CENTER);
+		eastLayout.add(categoriesLabel);
+		String[] cat = {"Bus", "Underground", "Train", "None"};
+		JList<String> categoryList = new JList<String>(cat);
+		categoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		categoryList.setFixedCellWidth(150);
+		categoryList.setFixedCellHeight(100);
+		categoryList.setAlignmentX(CENTER_ALIGNMENT);
+		eastLayout.add(categoryList);
+		JButton hideCategoriesButton = new JButton("Hide categories");
+		hideCategoriesButton.setAlignmentX(CENTER_ALIGNMENT);
+		eastLayout.add(hideCategoriesButton);
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1000,1000);
