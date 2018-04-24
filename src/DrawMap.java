@@ -2,10 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DrawMap extends JPanel {
-private ImageIcon bg = new ImageIcon("");
+private ImageIcon bg = new ImageIcon("jarvafaltet.png");
 	
 	public DrawMap(){
-		
 	}
 	
 	protected void paintComponent(Graphics g) {

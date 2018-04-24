@@ -7,6 +7,7 @@ public class GUIMap extends JFrame {
 	
 	private Map<String, int[]> locations = new HashMap<>();
 	private JPanel mapPanel = new JPanel();
+	private DrawMap map = new DrawMap();
 	
 	GUIMap(){
 		//TO-DO: Everything (layout) kartan ska finnas här
@@ -35,8 +36,7 @@ public class GUIMap extends JFrame {
 		north.add(coordinatesButton);
 		north.setPreferredSize(new Dimension(100, 100));
 		
-		JPanel mapArea = new JPanel();
-		add(mapArea, BorderLayout.CENTER);
+		add(map, BorderLayout.CENTER);
 		
 		JPanel east = new JPanel();
 		add(east, BorderLayout.EAST);
