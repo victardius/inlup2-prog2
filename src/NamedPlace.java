@@ -1,7 +1,7 @@
 
 public class NamedPlace extends Location {
 
-	public NamedPlace(int[] coordinates, String name, Category category) {
+	public NamedPlace(int[] coordinates, String name, String category) {
 		super(coordinates, name, category);
 	}
 	
