@@ -7,18 +7,15 @@ public class GUIMap extends JFrame {
 	
 	private Map<String, int[]> locations = new HashMap<>();
 	private JPanel mapPanel = new JPanel();
-	private DrawMap map = new DrawMap("jarvafaltet.png");
+	private DrawMap map = new DrawMap("");
 	
 	GUIMap(){
-		//TO-DO: Everything (layout) kartan ska finnas här
 
 		Box divideNorth = new Box(BoxLayout.PAGE_AXIS);
 		add(divideNorth, BorderLayout.NORTH);
-		JPanel archive = new JPanel();
-		divideNorth.add(archive);
-		JLabel text = new JLabel("test");
-		archive.add(text);
-		archive.setBackground(new Color(150, 150, 150));
+		
+		setJMenuBar(new GUIArchive(map).getJMenuBar());
+		
 		JPanel north = new JPanel();
 		divideNorth.add(north);
 		JButton newButton = new JButton("New");
@@ -42,7 +39,6 @@ public class GUIMap extends JFrame {
 		north.add(removeButton);
 		JButton coordinatesButton = new JButton("Search");
 		north.add(coordinatesButton);
-//		north.setPreferredSize(new Dimension(100, 100));
 		
 		JPanel mapArea = map;
 		JScrollPane scroll = new JScrollPane(mapArea);
@@ -50,19 +46,18 @@ public class GUIMap extends JFrame {
 		
 		JPanel east = new JPanel();
 		add(east, BorderLayout.EAST);
-//		east.setPreferredSize(new Dimension(200, 200));
 		Box eastLayout = new Box(BoxLayout.PAGE_AXIS);
 		east.add(eastLayout);
-		JLabel categoriesLabel = new JLabel("categories");
-		categoriesLabel.setHorizontalAlignment(categoriesLabel.CENTER);
-		eastLayout.add(categoriesLabel);
+		JPanel labelBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel categoriesLabel = new JLabel("Categories");
+		labelBox.add(categoriesLabel);
+		eastLayout.add(labelBox, BorderLayout.WEST);
 		String[] cat = {"Bus", "Underground", "Train"};
 		JList<String> categoryList = new JList<String>(cat);
 		categoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		categoryList.setFixedCellWidth(150);
-		categoryList.setFixedCellHeight(100);
-		categoryList.setAlignmentX(CENTER_ALIGNMENT);
-		eastLayout.add(categoryList);
+		categoryList.setVisibleRowCount(10);
+		eastLayout.add(new JScrollPane(categoryList));
 		JButton hideCategoriesButton = new JButton("Hide categories");
 		hideCategoriesButton.setAlignmentX(CENTER_ALIGNMENT);
 		eastLayout.add(hideCategoriesButton);
@@ -94,6 +89,12 @@ public class GUIMap extends JFrame {
 			 */
 		}
 		
+	}
+	
+	class ArchiveListener implements ActionListener{
+		public void actionPerformed(ActionEvent ave) {
+			
+		}
 	}
 	
 	class searchListener implements ActionListener {
