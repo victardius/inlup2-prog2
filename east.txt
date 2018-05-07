@@ -1,0 +1,17 @@
+JPanel east = new JPanel();
+		add(east, BorderLayout.EAST);
+		Box eastLayout = new Box(BoxLayout.PAGE_AXIS);
+		east.add(eastLayout);
+		JPanel labelBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel categoriesLabel = new JLabel("Categories");
+		labelBox.add(categoriesLabel);
+		eastLayout.add(labelBox, BorderLayout.WEST);
+		String[] cat = {"Bus", "Underground", "Train"};
+		JList<String> categoryList = new JList<String>(cat);
+		categoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		categoryList.setFixedCellWidth(150);
+		categoryList.setVisibleRowCount(10);
+		eastLayout.add(new JScrollPane(categoryList));
+		JButton hideCategoriesButton = new JButton("Hide categories");
+		hideCategoriesButton.setAlignmentX(CENTER_ALIGNMENT);
+		eastLayout.add(hideCategoriesButton);
