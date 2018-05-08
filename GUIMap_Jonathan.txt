@@ -1,0 +1,52 @@
+class newPositionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent ave) {
+			mapArea.addMouseListener(ml);
+			mapArea.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+
+			/*
+			 * En plats skapas genom att användaren väljer kategori i listan
+			 * till höger, väljer platstypen med hjälp av radioknapparna vid
+			 * New-knappen och trycker på knappen New. Då ska markören över
+			 * kartan ändras till ett kors (för att markera att nästa klick på
+			 * kartan skapar en plats) och en klick på kartan skapar en plats på
+			 * den klickade positionen. Obs att det är tänkt att den nedre
+			 * triangelspetsen visar var platsen finns, så det behövs en viss
+			 * justering av koordinater för platsen. Om ingen kategori är
+			 * markerad när en plats skapas blir platsen kategorilös och dess
+			 * färg blir svart. Om det redan finns en plats på den klickade
+			 * punkten ska ett felmeddelande ges – det är endast tillåtet med en
+			 * plats per position. Se beskrivningen av operationen Coordinates
+			 * nedan för lite mer information om detta. Efter att platsen är
+			 * skapad ska inte kartan vara mottaglig för klickning förrän
+			 * användaren trycker på knappen New igen.
+			 */
+		}
+
+	}
+
+	class getMousePosition extends MouseAdapter {
+
+		@Override
+		public void mouseClicked(MouseEvent mev) {
+
+			int x = mev.getX();
+			int y = mev.getY();
+			System.out.println(x + "," + y);
+			MarkersPlacement marker = new MarkersPlacement(x,y);
+			mapArea.add(marker);
+			mapArea.validate();
+			mapArea.removeAll();
+			mapArea.removeMouseListener(ml);
+			mapArea.setCursor(Cursor.getDefaultCursor());
+
+		}
+	}
+
+
+private JButton newButton;
+	private getMousePosition ml = new getMousePosition();
+
+
+		newButton.addActionListener(new newPositionListener());
