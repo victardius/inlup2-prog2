@@ -9,11 +9,12 @@ public class GUIArchive extends JFrame {
 
 	JFileChooser jfc = new JFileChooser(".");
 	JMenuBar mbar = new JMenuBar();
-	JScrollPane scroll = null;
-	JPanel picturePanel = null;
+	GUIMap gui;
+	// JScrollPane scroll = null;
+	// JPanel picturePanel = null;
 
-
-	GUIArchive(DrawMap map) {
+	GUIArchive(GUIMap map) {
+		gui = map;
 		setJMenuBar(mbar);
 		JMenu archiveMenu = new JMenu("Archive");
 		mbar.add(archiveMenu);
@@ -30,7 +31,7 @@ public class GUIArchive extends JFrame {
 		exitItem.addActionListener(new exitListener());
 		archiveMenu.add(exitItem);
 	}
-	
+
 	public JMenuBar getJMenuBar() {
 		return mbar;
 	}
@@ -41,15 +42,13 @@ public class GUIArchive extends JFrame {
 		public void actionPerformed(ActionEvent ave) {
 
 			int answer = jfc.showOpenDialog(GUIArchive.this);
-			
+
 			if (answer != JFileChooser.APPROVE_OPTION)
 				return;
-			
+
 			File file = jfc.getSelectedFile();
 			String fileName = file.getAbsolutePath();
-			picturePanel = new DrawMap(fileName);
-			validate();
-			repaint();
+			gui.setMap(fileName);
 
 			/*
 			 * Om man väljer New Map så visas en fildialog där användaren kan välja en bild
@@ -96,6 +95,11 @@ public class GUIArchive extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
+			if (gui.getChangesDone()) {
+//				JOptionPane.showOptionDialog(gui, "You have unsaved changes");
+			} else {
+				System.exit(0);
+			}
 			/*
 			 * Exit ska avsluta programexekveringen. Programmet ska även kunna avslutas via
 			 * stängningsrutan. Om det finns osparade förändringar ska det visas en
