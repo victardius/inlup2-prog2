@@ -3,11 +3,12 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class GUIArchive extends JFrame {
 
-	JFileChooser jfc = new JFileChooser(".");
+	
 	JMenuBar mbar = new JMenuBar();
 	GUIMap gui;
 	// JScrollPane scroll = null;
@@ -40,6 +41,11 @@ public class GUIArchive extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
+			
+			JFileChooser jfc = new JFileChooser(".");
+			FileFilter ff = new FileNameExtensionFilter("Images", ImageIO.getReaderFileSuffixes());
+			jfc.setAcceptAllFileFilterUsed(false);
+			jfc.setFileFilter(ff);
 
 			int answer = jfc.showOpenDialog(GUIArchive.this);
 
@@ -65,6 +71,17 @@ public class GUIArchive extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
+			JFileChooser jfc = new JFileChooser(".");
+			FileFilter ff = new FileNameExtensionFilter("Places", "places");
+			jfc.setAcceptAllFileFilterUsed(false);
+			jfc.setFileFilter(ff);
+			
+			int answer = jfc.showOpenDialog(gui);
+
+			if (answer != JFileChooser.APPROVE_OPTION)
+				return;
+			
+			
 			/*
 			 * Både Load Places och Save ska visa en filöppningsdialog och fråga användaren
 			 * om filnamnet där platserna ska sparas/därifrån platserna ska läsas in.
@@ -77,6 +94,16 @@ public class GUIArchive extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
+			
+			JFileChooser jfc = new JFileChooser(".");
+			FileFilter ff = new FileNameExtensionFilter("Places", "places");
+			jfc.setAcceptAllFileFilterUsed(false);
+			jfc.setFileFilter(ff);
+			
+			int answer = jfc.showSaveDialog(gui);
+
+			if (answer != JFileChooser.APPROVE_OPTION)
+				return;
 			/*
 			 * Både Load Places och Save ska visa en filöppningsdialog och fråga användaren
 			 * om filnamnet där platserna ska sparas/därifrån platserna ska läsas in.
@@ -96,7 +123,10 @@ public class GUIArchive extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ave) {
 			if (gui.getChangesDone()) {
-//				JOptionPane.showOptionDialog(gui, "You have unsaved changes");
+				int answer = JOptionPane.showConfirmDialog(gui, "Are you sure you want to exit? You have unsaved changes.", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (answer == JOptionPane.OK_OPTION) {
+					System.exit(0);
+				}
 			} else {
 				System.exit(0);
 			}

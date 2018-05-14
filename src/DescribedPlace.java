@@ -1,9 +1,10 @@
+import java.awt.Point;
 
 public class DescribedPlace extends Location {
 	
 	private String description;
 	
-	public DescribedPlace(int[] coordinates, String name, String category, String description) {
+	public DescribedPlace(Point coordinates, String name, String category, String description) {
 		super(coordinates, name, category);
 		this.description = description;
 	}

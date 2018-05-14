@@ -1,11 +1,12 @@
+import java.awt.Point;
 
 public abstract class Location {
 	
-	private int[] coordinates = new int[2];
+	private Point coordinates;
 	private String name;
 	private String category;
 
-	public Location(int coordinates[], String name, String category){
+	public Location(Point coordinates, String name, String category){
 		this.coordinates = coordinates;
 		this.name = name;
 		this.category = category;
@@ -15,7 +16,7 @@ public abstract class Location {
 		return name;
 	}
 	
-	public int[] getCoordinates() {
+	public Point getCoordinates() {
 		return coordinates;
 	}
 	

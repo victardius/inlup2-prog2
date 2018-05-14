@@ -5,14 +5,16 @@ import javax.swing.*;
 
 public class GUIMap extends JFrame {
 
-	private Map<String, int[]> locations = new HashMap<>();
+	private Map<Location, Point> locations = new HashMap<>();
 	private JScrollPane scroll = null;
 	private JPanel mapArea = null;
 	private DrawMap map;
-	private boolean changesDone = true;
+	private JButton newButton;
+	private getMousePosition ml = new getMousePosition();
+	private String[] cat = { "Bus", "Underground", "Train" };
+	private JList<String> categoryList = new JList<String>(cat);
 
 	GUIMap() {
-
 		Box divideNorth = new Box(BoxLayout.PAGE_AXIS);
 		add(divideNorth, BorderLayout.NORTH);
 
@@ -20,7 +22,8 @@ public class GUIMap extends JFrame {
 
 		JPanel north = new JPanel();
 		divideNorth.add(north);
-		JButton newButton = new JButton("New");
+		newButton = new JButton("New");
+		newButton.addActionListener(new newPositionListener());
 		north.add(newButton);
 		JRadioButton namedRadio = new JRadioButton("Named");
 		JRadioButton describedRadio = new JRadioButton("Described");
@@ -39,7 +42,7 @@ public class GUIMap extends JFrame {
 		north.add(hideButton);
 		JButton removeButton = new JButton("Remove");
 		north.add(removeButton);
-		JButton coordinatesButton = new JButton("Search");
+		JButton coordinatesButton = new JButton("Coordinates");
 		north.add(coordinatesButton);
 
 		JPanel east = new JPanel();
@@ -50,8 +53,6 @@ public class GUIMap extends JFrame {
 		JLabel categoriesLabel = new JLabel("Categories");
 		labelBox.add(categoriesLabel);
 		eastLayout.add(labelBox, BorderLayout.WEST);
-		String[] cat = { "Bus", "Underground", "Train" };
-		JList<String> categoryList = new JList<String>(cat);
 		categoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		categoryList.setFixedCellWidth(150);
 		categoryList.setVisibleRowCount(10);
@@ -60,7 +61,9 @@ public class GUIMap extends JFrame {
 		hideCategoriesButton.setAlignmentX(CENTER_ALIGNMENT);
 		eastLayout.add(hideCategoriesButton);
 
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		addWindowListener(new closeWindowListener());
+
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setSize(1000, 1000);
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -80,15 +83,25 @@ public class GUIMap extends JFrame {
 		mapArea.revalidate();
 		mapArea.repaint();
 	}
-	
+
 	public boolean getChangesDone() {
-		return changesDone;
+		if (locations.isEmpty())
+			return false;
+		else
+			return true;
+	}
+
+	public void setPlaces() {
+
 	}
 
 	class newPositionListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
+			
+			mapArea.addMouseListener(ml);
+			mapArea.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 
 			/*
 			 * En plats skapas genom att användaren väljer kategori i listan till höger,
@@ -107,6 +120,25 @@ public class GUIMap extends JFrame {
 			 */
 		}
 
+	}
+	
+	class getMousePosition extends MouseAdapter {
+
+		@Override
+		public void mouseClicked(MouseEvent mev) {
+
+			int x = mev.getX();
+			int y = mev.getY();
+			System.out.println(x + "," + y);
+			MarkersPlacement marker = new MarkersPlacement(x,y);
+			mapArea.add(marker);
+			mapArea.validate();
+			mapArea.removeAll();
+			mapArea.removeMouseListener(ml);
+			mapArea.setCursor(Cursor.getDefaultCursor());
+			categoryList.clearSelection();
+
+		}
 	}
 
 	class ArchiveListener implements ActionListener {
@@ -191,6 +223,22 @@ public class GUIMap extends JFrame {
 			 */
 		}
 
+	}
+
+	class closeWindowListener extends WindowAdapter {
+
+		public void windowClosing(WindowEvent wev) {
+			if (getChangesDone()) {
+				int answer = JOptionPane.showConfirmDialog(GUIMap.this,
+						"Are you sure you want to exit? You have unsaved changes.", "Warning",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (answer == JOptionPane.OK_OPTION) {
+					System.exit(0);
+				}
+			} else {
+				System.exit(0);
+			}
+		}
 	}
 
 }
