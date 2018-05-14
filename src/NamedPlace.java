@@ -1,8 +1,6 @@
-import java.awt.Point;
-
 public class NamedPlace extends Location {
 
-	public NamedPlace(Point coordinates, String name, String category) {
+	public NamedPlace(Coordinates coordinates, String name, String category) {
 		super(coordinates, name, category);
 	}
 	

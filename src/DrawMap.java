@@ -3,11 +3,13 @@ import java.awt.*;
 
 public class DrawMap extends JPanel {
 private ImageIcon bg;
+private int w, h;
 	
 	public DrawMap(String fileName){
+		super(null);
 		bg = new ImageIcon(fileName);
-		int w = bg.getIconWidth();
-		int h = bg.getIconHeight();
+		w = bg.getIconWidth();
+		h = bg.getIconHeight();
 		setPreferredSize(new Dimension(w,h));
 		setMaximumSize(new Dimension(w,h));
 		setMinimumSize(new Dimension(w,h));
@@ -16,6 +18,14 @@ private ImageIcon bg;
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(bg.getImage(), 0, 0, this);
+	}
+	
+	public int getImageWidth () {
+		return w;
+	}
+	
+	public int getImageHeight () {
+		return h;
 	}
 
 }

@@ -5,14 +5,17 @@ import javax.swing.*;
 
 public class GUIMap extends JFrame {
 
-	private Map<Location, Point> locations = new HashMap<>();
+	private Map<String, Location> locationNames = new HashMap<>();
+	private Map<Coordinates, Location> locationCoordinatess = new HashMap<>();
 	private JScrollPane scroll = null;
-	private JPanel mapArea = null;
+	private DrawMap mapArea = null;
 	private DrawMap map;
 	private JButton newButton;
 	private getMousePosition ml = new getMousePosition();
 	private String[] cat = { "Bus", "Underground", "Train" };
 	private JList<String> categoryList = new JList<String>(cat);
+	private JRadioButton namedRadio, describedRadio;
+	private Color color;
 
 	GUIMap() {
 		Box divideNorth = new Box(BoxLayout.PAGE_AXIS);
@@ -25,8 +28,8 @@ public class GUIMap extends JFrame {
 		newButton = new JButton("New");
 		newButton.addActionListener(new newPositionListener());
 		north.add(newButton);
-		JRadioButton namedRadio = new JRadioButton("Named");
-		JRadioButton describedRadio = new JRadioButton("Described");
+		namedRadio = new JRadioButton("Named", true);
+		describedRadio = new JRadioButton("Described");
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(namedRadio);
 		bg.add(describedRadio);
@@ -44,6 +47,7 @@ public class GUIMap extends JFrame {
 		north.add(removeButton);
 		JButton coordinatesButton = new JButton("Coordinates");
 		north.add(coordinatesButton);
+		coordinatesButton.addActionListener(new coordinatesListener());
 
 		JPanel east = new JPanel();
 		add(east, BorderLayout.EAST);
@@ -64,7 +68,7 @@ public class GUIMap extends JFrame {
 		addWindowListener(new closeWindowListener());
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setSize(1000, 1000);
+		setSize(1000, 380);
 		setLocationRelativeTo(null);
 		setVisible(true);
 
@@ -78,28 +82,45 @@ public class GUIMap extends JFrame {
 		mapArea = map;
 		scroll = new JScrollPane(mapArea);
 		add(scroll, BorderLayout.CENTER);
-
+		pack();
 		validate();
 		mapArea.revalidate();
 		mapArea.repaint();
 	}
 
 	public boolean getChangesDone() {
-		if (locations.isEmpty())
+		if (locationNames.isEmpty() || locationCoordinatess.isEmpty())
 			return false;
 		else
 			return true;
 	}
 
-	public void setPlaces() {
+	public void addDescribedToLists(Coordinates coordinates, String name, String category, String description) {
+		DescribedPlace place = new DescribedPlace(coordinates, name, category, description);
+		locationNames.put(name, place);
+		locationCoordinatess.put(coordinates, place);
 
+	}
+
+	public void addNamedToLists(Coordinates coordinates, String name, String category) {
+		NamedPlace place = new NamedPlace(coordinates, name, category);
+		locationNames.put(name, place);
+		locationCoordinatess.put(coordinates, place);
+	}
+
+	public Map<String, Location> getNameList() {
+		return locationNames;
+	}
+
+	public Map<Coordinates, Location> getPositionList() {
+		return locationCoordinatess;
 	}
 
 	class newPositionListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			
+
 			mapArea.addMouseListener(ml);
 			mapArea.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 
@@ -121,7 +142,7 @@ public class GUIMap extends JFrame {
 		}
 
 	}
-	
+
 	class getMousePosition extends MouseAdapter {
 
 		@Override
@@ -129,20 +150,47 @@ public class GUIMap extends JFrame {
 
 			int x = mev.getX();
 			int y = mev.getY();
-			System.out.println(x + "," + y);
-			MarkersPlacement marker = new MarkersPlacement(x,y);
-			mapArea.add(marker);
-			mapArea.validate();
-			mapArea.removeAll();
-			mapArea.removeMouseListener(ml);
-			mapArea.setCursor(Cursor.getDefaultCursor());
-			categoryList.clearSelection();
 
-		}
-	}
+			if (x < mapArea.getImageWidth() && y < mapArea.getImageHeight()) {
 
-	class ArchiveListener implements ActionListener {
-		public void actionPerformed(ActionEvent ave) {
+				Coordinates coordinates = new Coordinates(x, y);
+				String category = categoryList.getSelectedValue();
+				String name;
+
+				if (namedRadio.isSelected()) {
+					name = JOptionPane.showInputDialog("Name");
+					addNamedToLists(coordinates, name, category);
+				} else if (describedRadio.isSelected()) {
+					DescribedButton described = new DescribedButton();
+					int responce = JOptionPane.showConfirmDialog(GUIMap.this, described, "Enter coordinates",
+							JOptionPane.OK_CANCEL_OPTION);
+					if (responce != JOptionPane.OK_OPTION)
+						return;
+					String description = described.getDescription();
+					name = described.getName();
+					addDescribedToLists(coordinates, name, category, description);
+				}
+				
+				categoryList.getSelectedIndex();
+				if(categoryList.getSelectedIndex() == 0){
+					color = (Color.GREEN);}
+				else if(categoryList.getSelectedIndex() == 1){
+					color = Color.BLUE;}
+				else if(categoryList.getSelectedIndex() == 2)
+					color = Color.RED;
+				else
+					color = Color.BLACK;
+
+				System.out.println(x + "," + y + " " + category);
+				mapArea.add(new MarkersPlacement(x, y, color));
+				mapArea.removeMouseListener(ml);
+				mapArea.setCursor(Cursor.getDefaultCursor());
+				categoryList.clearSelection();
+				repaint();
+
+			} else {
+				JOptionPane.showMessageDialog(mapArea, "Invalid location!");
+			}
 
 		}
 	}
@@ -183,18 +231,17 @@ public class GUIMap extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			/*
-			 * Användaren ska kunna fråga om vad som finns på en viss position på kartan
-			 * genom att klicka på knappen Coordinates. Detta öppnar en lite dialogruta: där
-			 * användaren kan mata in koordinater. Om det finns en plats på dessa
-			 * koordinater så ska platsen göras synlig (om den var osynlig) och markerad.
-			 * Eventuella platser som var markerade innan ska avmarkeras. Om det inte finns
-			 * någon plats på dessa koordinater ska en dialogruta med meddelande om detta
-			 * visas. I den här dialogen bör det kontrolleras att de inmatade värdena är
-			 * numeriska.
-			 */
-		}
 
+			CoordinatesButton f = new CoordinatesButton();
+			int responce = JOptionPane.showConfirmDialog(GUIMap.this, f, "Enter coordinates",
+					JOptionPane.OK_CANCEL_OPTION);
+
+			if (responce != JOptionPane.OK_OPTION)
+				return;
+			int x = f.getXCoordinate();
+			int y = f.getYCoordinate();
+
+		}
 	}
 
 	class removeListener implements ActionListener {
