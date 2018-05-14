@@ -1,0 +1,21 @@
+
+
+
+
+public void actionPerformed(ActionEvent ave) {
+			
+			Coordinates f = new Coordinates();
+			int responce = JOptionPane.showConfirmDialog(GUIMap.this, f, "Enter coordinates", JOptionPane.OK_CANCEL_OPTION);
+			
+			if (responce != JOptionPane.OK_OPTION)
+				return;
+			int x = f.getXCoordinate();
+			int y = f.getYCoordinate();
+			
+
+
+
+
+
+
+		coordinatesButton.addActionListener(new coordinatesListener());
