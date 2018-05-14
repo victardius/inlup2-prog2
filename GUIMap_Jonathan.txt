@@ -50,3 +50,14 @@ private JButton newButton;
 
 
 		newButton.addActionListener(new newPositionListener());
+
+
+				categoryList.getSelectedIndex();
+			if(categoryList.getSelectedIndex() == 0){
+				color = (Color.GREEN);}
+			else if(categoryList.getSelectedIndex() == 1){
+				color = Color.BLUE;}
+			else if(categoryList.getSelectedIndex() == 2)
+				color = Color.RED;
+			else
+				color = Color.BLACK;
