@@ -6,7 +6,8 @@ import javax.swing.*;
 public class GUIMap extends JFrame {
 
 	private Map<String, Location> locationNames = new HashMap<>();
-	private Map<Coordinates, Location> locationCoordinatess = new HashMap<>();
+	private Map<Coordinates, Location> locationCoordinates = new HashMap<>();
+	private Map<String, Location> locationCategory = new HashMap<>();
 	private JScrollPane scroll = null;
 	private DrawMap mapArea = null;
 	private DrawMap map;
@@ -98,7 +99,8 @@ public class GUIMap extends JFrame {
 		
 		DescribedPlace place = new DescribedPlace(coordinates, name, category, description, color);
 		locationNames.put(name, place);
-		locationCoordinatess.put(coordinates, place);
+		locationCoordinates.put(coordinates, place);
+		locationCategory.put(category, place);
 		paintLocation(place);
 
 	}
@@ -108,12 +110,13 @@ public class GUIMap extends JFrame {
 
 		NamedPlace place = new NamedPlace(coordinates, name, category, color);
 		locationNames.put(name, place);
-		locationCoordinatess.put(coordinates, place);
+		locationCoordinates.put(coordinates, place);
+		locationCategory.put(category, place);
 		paintLocation(place);
 	}
 
 	public Collection<Location> getLocations() {
-		Collection<Location> list = locationCoordinatess.values();
+		Collection<Location> list = locationCoordinates.values();
 		return list;
 	}
 
@@ -122,7 +125,7 @@ public class GUIMap extends JFrame {
 	}
 
 	public Map<Coordinates, Location> getPositionList() {
-		return locationCoordinatess;
+		return locationCoordinates;
 	}
 
 	public boolean getSaved() {
