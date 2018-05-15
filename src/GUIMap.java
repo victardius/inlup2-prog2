@@ -12,6 +12,7 @@ public class GUIMap extends JFrame {
 	private DrawMap map;
 	private JButton newButton;
 	private getMousePosition ml = new getMousePosition();
+	private markerMouseActions m2 = new markerMouseActions();
 	private String[] cat = { "Bus", "Underground", "Train" };
 	private JList<String> categoryList = new JList<String>(cat);
 	private JRadioButton namedRadio, describedRadio;
@@ -95,17 +96,20 @@ public class GUIMap extends JFrame {
 			return true;
 	}
 
-	public void addDescribedToLists(Coordinates coordinates, String name, String category, String description) {
-		DescribedPlace place = new DescribedPlace(coordinates, name, category, description);
+	public void addDescribedToLists(Coordinates coordinates, String name, String category, String description, Color color) {
+		DescribedPlace place = new DescribedPlace(coordinates, name, category, description, color);
 		locationNames.put(name, place);
 		locationCoordinatess.put(coordinates, place);
+		paintLocation(place);
+
 
 	}
 
-	public void addNamedToLists(Coordinates coordinates, String name, String category) {
-		NamedPlace place = new NamedPlace(coordinates, name, category);
+	public void addNamedToLists(Coordinates coordinates, String name, String category, Color color) {
+		NamedPlace place = new NamedPlace(coordinates, name, category, color);
 		locationNames.put(name, place);
 		locationCoordinatess.put(coordinates, place);
+		paintLocation(place);
 	}
 
 	public Map<String, Location> getNameList() {
@@ -150,6 +154,17 @@ public class GUIMap extends JFrame {
 
 			int x = mev.getX();
 			int y = mev.getY();
+			
+			
+			categoryList.getSelectedIndex();
+			if(categoryList.getSelectedIndex() == 0){
+				color = (Color.GREEN);}
+			else if(categoryList.getSelectedIndex() == 1){
+				color = Color.BLUE;}
+			else if(categoryList.getSelectedIndex() == 2) {
+				color = Color.RED;}
+			else
+				color = Color.BLACK;
 
 			if (x < mapArea.getImageWidth() && y < mapArea.getImageHeight()) {
 
@@ -159,7 +174,7 @@ public class GUIMap extends JFrame {
 
 				if (namedRadio.isSelected()) {
 					name = JOptionPane.showInputDialog("Name");
-					addNamedToLists(coordinates, name, category);
+					addNamedToLists(coordinates, name, category, color);
 				} else if (describedRadio.isSelected()) {
 					DescribedButton described = new DescribedButton();
 					int responce = JOptionPane.showConfirmDialog(GUIMap.this, described, "Enter coordinates",
@@ -168,30 +183,48 @@ public class GUIMap extends JFrame {
 						return;
 					String description = described.getDescription();
 					name = described.getName();
-					addDescribedToLists(coordinates, name, category, description);
+					addDescribedToLists(coordinates, name, category, description, color);
 				}
 				
-				categoryList.getSelectedIndex();
-				if(categoryList.getSelectedIndex() == 0){
-					color = (Color.GREEN);}
-				else if(categoryList.getSelectedIndex() == 1){
-					color = Color.BLUE;}
-				else if(categoryList.getSelectedIndex() == 2)
-					color = Color.RED;
-				else
-					color = Color.BLACK;
+				
 
-				System.out.println(x + "," + y + " " + category);
-				mapArea.add(new MarkersPlacement(x, y, color));
-				mapArea.removeMouseListener(ml);
-				mapArea.setCursor(Cursor.getDefaultCursor());
-				categoryList.clearSelection();
-				repaint();
+//				System.out.println(x + "," + y + " " + category);
+//				Location marker = new Location(coordinates, color);
+//				mapArea.add(marker);
+//				System.out.println(marker.getCoordinates());
+//				marker.addMouseListener(m2);
+//				mapArea.removeMouseListener(ml);
+//				mapArea.setCursor(Cursor.getDefaultCursor());
+//				categoryList.clearSelection();
+//				repaint();
 
 			} else {
 				JOptionPane.showMessageDialog(mapArea, "Invalid location!");
 			}
 
+		}
+	}
+	
+	private void paintLocation(Location marker) {
+		
+		mapArea.add(marker);
+		marker.addMouseListener(m2);
+		mapArea.removeMouseListener(ml);
+		mapArea.setCursor(Cursor.getDefaultCursor());
+		categoryList.clearSelection();
+		repaint();
+		
+	}
+	
+class markerMouseActions extends MouseAdapter{
+		
+		@Override
+		public void mouseClicked(MouseEvent mev) {
+			
+			System.out.println("i was clicked");
+			mev.getClass();
+			
+			
 		}
 	}
 
