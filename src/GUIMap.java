@@ -19,6 +19,7 @@ public class GUIMap extends JFrame {
 	private JRadioButton namedRadio, describedRadio;
 	private Color color;
 	private boolean saved = true;
+	private ArrayList<Location> selectionList = new ArrayList<>();
 
 	GUIMap() {
 		Box divideNorth = new Box(BoxLayout.PAGE_AXIS);
@@ -228,9 +229,32 @@ class markerMouseActions extends MouseAdapter{
 		@Override
 		public void mouseClicked(MouseEvent mev) {
 			
-			System.out.println("i was clicked");
 			Location l = (Location)mev.getComponent();
 			
+			if (mev.getButton() == MouseEvent.BUTTON1) {
+				if (selectionList.contains(l)) {
+					selectionList.remove(l);
+					
+				}
+				else {
+					selectionList.add(l);
+				}
+				
+			}
+				
+			else if (mev.getButton() == MouseEvent.BUTTON3) {
+				if (l instanceof NamedPlace) {
+					JOptionPane.showMessageDialog(mapArea, "Name: " + l.getName() + "\n Coordinates: " + l.getCoordinates());
+				}
+				else {
+					l = (DescribedPlace)l;
+					String [] outprint = l.toString().split(",");
+					JOptionPane.showMessageDialog(mapArea, "Name: " + outprint[4] + "\n Coordinates: " + outprint[2] + ", " + outprint[3] + "\n Description: " + outprint[5]);
+
+					
+				}
+				
+			}
 			
 			
 		}
