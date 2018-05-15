@@ -8,6 +8,7 @@ public abstract class Location extends JComponent {
 	private String category;
 	private Color color;
 
+
 	public Location(Coordinates coordinates, String name, String category, Color color) {
 		this.coordinates = coordinates;
 		this.name = name;
@@ -21,11 +22,13 @@ public abstract class Location extends JComponent {
 		setPreferredSize(new Dimension(20, 20));
 
 	}
-
+	
+	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		int[] xes = { 0, 10, 20 };
-		int[] yes = { 0, 20, 0 };
+		int [] xes = {0, 10, 20};
+		int [] yes = {0, 20, 0};
+
 		g.setColor(color);
 		g.fillPolygon(xes, yes, 3);
 	}

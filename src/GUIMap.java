@@ -7,7 +7,6 @@ public class GUIMap extends JFrame {
 
 	private Map<String, Location> locationNames = new HashMap<>();
 	private Map<Coordinates, Location> locationCoordinatess = new HashMap<>();
-	private Map<MarkersPlacement, Location> locations = new HashMap<>();
 	private JScrollPane scroll = null;
 	private DrawMap mapArea = null;
 	private DrawMap map;
@@ -91,27 +90,34 @@ public class GUIMap extends JFrame {
 		mapArea.repaint();
 	}
 
+
 	public void addDescribedToLists(Coordinates coordinates, String name, String category, String description,
 			Color color) {
 		saved = false;
+
 		DescribedPlace place = new DescribedPlace(coordinates, name, category, description, color);
 		locationNames.put(name, place);
 		locationCoordinatess.put(coordinates, place);
 		paintLocation(place);
 
+
 	}
 
 	public void addNamedToLists(Coordinates coordinates, String name, String category, Color color) {
+
 		saved = false;
+
 		NamedPlace place = new NamedPlace(coordinates, name, category, color);
 		locationNames.put(name, place);
 		locationCoordinatess.put(coordinates, place);
 		paintLocation(place);
+
 	}
 
 	public Collection<Location> getLocations() {
 		Collection<Location> list = locationCoordinatess.values();
 		return list;
+
 	}
 
 	public Map<String, Location> getNameList() {
@@ -165,14 +171,15 @@ public class GUIMap extends JFrame {
 			int x = mev.getX();
 			int y = mev.getY();
 			
+	
 			categoryList.getSelectedIndex();
-			if (categoryList.getSelectedIndex() == 0) {
-				color = (Color.GREEN);
-			} else if (categoryList.getSelectedIndex() == 1) {
-				color = Color.BLUE;
-			} else if (categoryList.getSelectedIndex() == 2) {
-				color = Color.RED;
-			} else
+			if(categoryList.getSelectedIndex() == 0){
+				color = (Color.GREEN);}
+			else if(categoryList.getSelectedIndex() == 1){
+				color = Color.BLUE;}
+			else if(categoryList.getSelectedIndex() == 2) {
+				color = Color.RED;}
+			else
 				color = Color.BLACK;
 
 			if (x < mapArea.getImageWidth() && y < mapArea.getImageHeight()) {
@@ -195,11 +202,40 @@ public class GUIMap extends JFrame {
 					addDescribedToLists(coordinates, name, category, description, color);
 				}
 
+
+				
+				
+
+//				System.out.println(x + "," + y + " " + category);
+//				Location marker = new Location(coordinates, color);
+//				mapArea.add(marker);
+//				System.out.println(marker.getCoordinates());
+//				marker.addMouseListener(m2);
+//				mapArea.removeMouseListener(ml);
+//				mapArea.setCursor(Cursor.getDefaultCursor());
+//				categoryList.clearSelection();
+//				repaint();
+
 			} else {
 				JOptionPane.showMessageDialog(mapArea, "Invalid location!");
 			}
 
 		}
+	}
+	
+class markerMouseActions extends MouseAdapter{
+		
+		@Override
+		public void mouseClicked(MouseEvent mev) {
+			
+			System.out.println("i was clicked");
+			Location l = (Location)mev.getComponent();
+			
+			
+			
+		}
+		
+		
 	}
 
 	private void paintLocation(Location marker) {
@@ -211,17 +247,6 @@ public class GUIMap extends JFrame {
 		categoryList.clearSelection();
 		repaint();
 
-	}
-
-	class markerMouseActions extends MouseAdapter {
-
-		@Override
-		public void mouseClicked(MouseEvent mev) {
-
-			System.out.println("i was clicked");
-			Location l = (Location)mev.getComponent();
-
-		}
 	}
 
 	class searchListener implements ActionListener {
