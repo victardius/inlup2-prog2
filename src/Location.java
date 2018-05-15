@@ -34,6 +34,13 @@ public abstract class Location extends JComponent {
 		g.fillPolygon(xes, yes, 3);
 	}
 	
+//	protected void paintBorder(Graphics g) {
+//		int [] xes = {-2, 10, 22};
+//		int [] yes = {0, 22, 0};
+//		
+//		g.setColor(Color.PINK);
+//	}
+	
 	public void setDisplayed (boolean b) {
 		this.setVisible(b);
 		this.setEnabled(b);
@@ -43,8 +50,12 @@ public abstract class Location extends JComponent {
 		return name;
 	}
 
-	public String getCoordinates() {
+	public String getCoordinatesToString() {
 		return coordinates.getX() + "," + coordinates.getY();
+	}
+	
+	public Coordinates getCoordinates(){
+		return coordinates;
 	}
 
 	public String getCategory() {

@@ -15,7 +15,7 @@ public class DescribedPlace extends Location {
 
 	@Override
 	public String toString() {
-		return "Described," + getCategory() + "," + getCoordinates() + "," + getName() + "," + description;
+		return "Described," + getCategory() + "," + getCoordinatesToString() + "," + getName() + "," + description;
 	}
 
 }

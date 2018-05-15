@@ -8,7 +8,7 @@ public class NamedPlace extends Location {
 
 	@Override
 	public String toString() {
-		return "Named," + getCategory() + "," + getCoordinates() + "," + getName();
+		return "Named," + getCategory() + "," + getCoordinatesToString() + "," + getName();
 	}
 
 }

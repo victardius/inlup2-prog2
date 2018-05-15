@@ -2,12 +2,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class GUIMap extends JFrame {
 
 	private Map<String, Location> locationNames = new HashMap<>();
 	private Map<Coordinates, Location> locationCoordinates = new HashMap<>();
-	private Map<String, Location> locationCategory = new HashMap<>();
+	private Map<String, ArrayList<Location>> locationCategory = new HashMap<>();
+	private ArrayList<Location> buses = new ArrayList<>();
+	private ArrayList<Location> trains = new ArrayList<>();
+	private ArrayList<Location> underground = new ArrayList<>();
+	private ArrayList<Location> selectionList = new ArrayList<>();
 	private JScrollPane scroll = null;
 	private DrawMap mapArea = null;
 	private DrawMap map;
@@ -19,7 +24,6 @@ public class GUIMap extends JFrame {
 	private JRadioButton namedRadio, describedRadio;
 	private Color color;
 	private boolean saved = true;
-	private ArrayList<Location> selectionList = new ArrayList<>();
 
 	GUIMap() {
 		Box divideNorth = new Box(BoxLayout.PAGE_AXIS);
@@ -45,10 +49,13 @@ public class GUIMap extends JFrame {
 		north.add(searchField);
 		JButton searchButton = new JButton("Search");
 		north.add(searchButton);
+		searchButton.addActionListener(new searchListener());
 		JButton hideButton = new JButton("Hide");
 		north.add(hideButton);
+		hideButton.addActionListener(new hideListener());
 		JButton removeButton = new JButton("Remove");
 		north.add(removeButton);
+		removeButton.addActionListener(new removeListener());
 		JButton coordinatesButton = new JButton("Coordinates");
 		north.add(coordinatesButton);
 		coordinatesButton.addActionListener(new coordinatesListener());
@@ -68,6 +75,7 @@ public class GUIMap extends JFrame {
 		JButton hideCategoriesButton = new JButton("Hide categories");
 		hideCategoriesButton.setAlignmentX(CENTER_ALIGNMENT);
 		eastLayout.add(hideCategoriesButton);
+		hideCategoriesButton.addActionListener(new hideCategoryListener());
 
 		addWindowListener(new closeWindowListener());
 
@@ -76,6 +84,10 @@ public class GUIMap extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
+		locationCategory.put("Bus", buses);
+		locationCategory.put("Train", trains);
+		locationCategory.put("Underground", underground);
+		
 	}
 
 	public void setMap(String fileName) {
@@ -92,28 +104,49 @@ public class GUIMap extends JFrame {
 		mapArea.repaint();
 	}
 
-
-
 	public void addDescribedToLists(Coordinates coordinates, String name, String category, String description,
 			Color color) {
-		saved = false;
-		
+
 		DescribedPlace place = new DescribedPlace(coordinates, name, category, description, color);
-		locationNames.put(name, place);
-		locationCoordinates.put(coordinates, place);
-		locationCategory.put(category, place);
-		paintLocation(place);
+
+		addToLists(place);
 
 	}
 
 	public void addNamedToLists(Coordinates coordinates, String name, String category, Color color) {
-		saved = false;
 
 		NamedPlace place = new NamedPlace(coordinates, name, category, color);
-		locationNames.put(name, place);
-		locationCoordinates.put(coordinates, place);
-		locationCategory.put(category, place);
+
+		addToLists(place);
+
+	}
+
+	public void addToLists(Location place) {
+		saved = false;
+		locationNames.put(place.getName(), place);
+		locationCoordinates.put(place.getCoordinates(), place);
+
+		if (place.getCategory().equals("Bus")) {
+			buses.add(place);
+		}else if (place.getCategory().equals("Train")) {
+			trains.add(place);
+		}else if (place.getCategory().equals("Underground")) {
+			underground.add(place);
+		}
+		
 		paintLocation(place);
+	}
+
+	public void removeLocation(Location l) {
+		locationNames.remove(l.getName());
+		locationCoordinates.remove(l.getCoordinates());
+		if (l.getCategory().equals("Bus")) {
+			buses.remove(l);
+		}else if (l.getCategory().equals("Train")) {
+			trains.remove(l);
+		}else if (l.getCategory().equals("Underground")) {
+			underground.remove(l);
+		}
 	}
 
 	public Collection<Location> getLocations() {
@@ -137,6 +170,26 @@ public class GUIMap extends JFrame {
 		saved = b;
 	}
 
+	public void setMarked(Location l, boolean b) {
+		if (b) {
+			System.out.println("removing lov");
+			selectionList.remove(l);
+			l.setBorder(null);
+		}
+		else {
+			System.out.println("adding loc");
+			selectionList.add(l);
+			l.setBorder(BorderFactory.createLineBorder(Color.MAGENTA, 2));
+		}
+	}
+	
+	public void clearSelection() {
+		for(Location l : selectionList) {
+			setMarked(l, true);
+		}
+		selectionList.clear();
+	}
+	
 	class newPositionListener implements ActionListener {
 
 		@Override
@@ -171,16 +224,15 @@ public class GUIMap extends JFrame {
 
 			int x = mev.getX();
 			int y = mev.getY();
-			
 
 			categoryList.getSelectedIndex();
-			if(categoryList.getSelectedIndex() == 0){
-				color = (Color.GREEN);}
-			else if(categoryList.getSelectedIndex() == 1){
-				color = Color.BLUE;}
-			else if(categoryList.getSelectedIndex() == 2) {
-				color = Color.RED;}
-			else
+			if (categoryList.getSelectedIndex() == 0) {
+				color = (Color.GREEN);
+			} else if (categoryList.getSelectedIndex() == 1) {
+				color = Color.BLUE;
+			} else if (categoryList.getSelectedIndex() == 2) {
+				color = Color.RED;
+			} else
 				color = Color.BLACK;
 
 			if (x < mapArea.getImageWidth() && y < mapArea.getImageHeight()) {
@@ -203,19 +255,15 @@ public class GUIMap extends JFrame {
 					addDescribedToLists(coordinates, name, category, description, color);
 				}
 
-				
-				
-
-//				System.out.println(x + "," + y + " " + category);
-//				Location marker = new Location(coordinates, color);
-//				mapArea.add(marker);
-//				System.out.println(marker.getCoordinates());
-//				marker.addMouseListener(m2);
-//				mapArea.removeMouseListener(ml);
-//				mapArea.setCursor(Cursor.getDefaultCursor());
-//				categoryList.clearSelection();
-//				repaint();
-
+				// System.out.println(x + "," + y + " " + category);
+				// Location marker = new Location(coordinates, color);
+				// mapArea.add(marker);
+				// System.out.println(marker.getCoordinates());
+				// marker.addMouseListener(m2);
+				// mapArea.removeMouseListener(ml);
+				// mapArea.setCursor(Cursor.getDefaultCursor());
+				// categoryList.clearSelection();
+				// repaint();
 
 			} else {
 				JOptionPane.showMessageDialog(mapArea, "Invalid location!");
@@ -223,43 +271,34 @@ public class GUIMap extends JFrame {
 
 		}
 	}
-	
-class markerMouseActions extends MouseAdapter{
-		
+
+	class markerMouseActions extends MouseAdapter {
+
 		@Override
 		public void mouseClicked(MouseEvent mev) {
-			
-			Location l = (Location)mev.getComponent();
-			
+
+			Location l = (Location) mev.getComponent();
+
 			if (mev.getButton() == MouseEvent.BUTTON1) {
-				if (selectionList.contains(l)) {
-					selectionList.remove(l);
-					
-				}
-				else {
-					selectionList.add(l);
-				}
-				
+				setMarked(l, selectionList.contains(l));
+
 			}
-				
+
 			else if (mev.getButton() == MouseEvent.BUTTON3) {
 				if (l instanceof NamedPlace) {
-					JOptionPane.showMessageDialog(mapArea, "Name: " + l.getName() + "\n Coordinates: " + l.getCoordinates());
+					JOptionPane.showMessageDialog(mapArea,
+							"Name: " + l.getName() + "\n Coordinates: " + l.getCoordinatesToString());
+				} else {
+					l = (DescribedPlace) l;
+					String[] outprint = l.toString().split(",");
+					JOptionPane.showMessageDialog(mapArea, "Name: " + outprint[4] + "\n Coordinates: " + outprint[2]
+							+ ", " + outprint[3] + "\n Description: " + outprint[5]);
 				}
-				else {
-					l = (DescribedPlace)l;
-					String [] outprint = l.toString().split(",");
-					JOptionPane.showMessageDialog(mapArea, "Name: " + outprint[4] + "\n Coordinates: " + outprint[2] + ", " + outprint[3] + "\n Description: " + outprint[5]);
 
-					
-				}
-				
 			}
-			
-			
+
 		}
-		
-		
+
 	}
 
 	private void paintLocation(Location marker) {
@@ -277,6 +316,9 @@ class markerMouseActions extends MouseAdapter{
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
+			
+			clearSelection();
+			
 			/*
 			 * Operationen Search letar upp platser med det namn som matats in i sökfältet.
 			 * Den börjar med att avmarkera ev. platser som är markerade före sökningen,
@@ -296,6 +338,11 @@ class markerMouseActions extends MouseAdapter{
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
+			for (Location l : selectionList) {
+				l.setDisplayed(false);
+			}
+			selectionList.clear();
+
 			/*
 			 * Operationen Hide gömmer alla markerade platser och gör dem avmarkerade. Även
 			 * denna operation borde stödjas av någon lämplig datastruktur så att man inte
@@ -326,6 +373,13 @@ class markerMouseActions extends MouseAdapter{
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
+			for (Location l : selectionList) {
+				removeLocation(l);
+				mapArea.remove(l);
+			}
+			selectionList.clear();
+			repaint();
+
 			/*
 			 * Operationen Remove tar bort alla markerade platser – inte bara så att de inte
 			 * syns på kartan utan objekten ska tas bort från alla datastrukturer där de kan
@@ -339,6 +393,22 @@ class markerMouseActions extends MouseAdapter{
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
+
+			categoryList.getSelectedIndex();
+			if (categoryList.getSelectedIndex() == 0) {
+				for (Location l : buses) {
+					l.setDisplayed(false);
+				}
+			} else if (categoryList.getSelectedIndex() == 1) {
+				for (Location l : underground) {
+					l.setDisplayed(false);
+				}
+			} else if (categoryList.getSelectedIndex() == 2) {
+				for (Location l : trains) {
+					l.setDisplayed(false);
+				}
+			}
+			
 			/*
 			 * Om man vill gömma alla platser som hör till en viss kategori så väljer man
 			 * kategorin i kategorilistan och klickar på knappen Hide category – platser som
