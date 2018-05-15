@@ -91,33 +91,30 @@ public class GUIMap extends JFrame {
 	}
 
 
+
 	public void addDescribedToLists(Coordinates coordinates, String name, String category, String description,
 			Color color) {
 		saved = false;
-
+		
 		DescribedPlace place = new DescribedPlace(coordinates, name, category, description, color);
 		locationNames.put(name, place);
 		locationCoordinatess.put(coordinates, place);
 		paintLocation(place);
 
-
 	}
 
 	public void addNamedToLists(Coordinates coordinates, String name, String category, Color color) {
-
 		saved = false;
 
 		NamedPlace place = new NamedPlace(coordinates, name, category, color);
 		locationNames.put(name, place);
 		locationCoordinatess.put(coordinates, place);
 		paintLocation(place);
-
 	}
 
 	public Collection<Location> getLocations() {
 		Collection<Location> list = locationCoordinatess.values();
 		return list;
-
 	}
 
 	public Map<String, Location> getNameList() {
@@ -171,7 +168,7 @@ public class GUIMap extends JFrame {
 			int x = mev.getX();
 			int y = mev.getY();
 			
-	
+
 			categoryList.getSelectedIndex();
 			if(categoryList.getSelectedIndex() == 0){
 				color = (Color.GREEN);}
@@ -202,7 +199,6 @@ public class GUIMap extends JFrame {
 					addDescribedToLists(coordinates, name, category, description, color);
 				}
 
-
 				
 				
 
@@ -215,6 +211,7 @@ public class GUIMap extends JFrame {
 //				mapArea.setCursor(Cursor.getDefaultCursor());
 //				categoryList.clearSelection();
 //				repaint();
+
 
 			} else {
 				JOptionPane.showMessageDialog(mapArea, "Invalid location!");

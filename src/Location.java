@@ -24,11 +24,12 @@ public abstract class Location extends JComponent {
 	}
 	
 	
+	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int [] xes = {0, 10, 20};
 		int [] yes = {0, 20, 0};
-
+		
 		g.setColor(color);
 		g.fillPolygon(xes, yes, 3);
 	}
