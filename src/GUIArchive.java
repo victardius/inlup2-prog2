@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
+
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.*;
 import javax.imageio.ImageIO;
@@ -8,7 +10,6 @@ import javax.swing.*;
 
 public class GUIArchive extends JFrame {
 
-	
 	JMenuBar mbar = new JMenuBar();
 	GUIMap gui;
 	// JScrollPane scroll = null;
@@ -41,7 +42,7 @@ public class GUIArchive extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			
+
 			JFileChooser jfc = new JFileChooser(".");
 			FileFilter ff = new FileNameExtensionFilter("Images", ImageIO.getReaderFileSuffixes());
 			jfc.setAcceptAllFileFilterUsed(false);
@@ -75,13 +76,50 @@ public class GUIArchive extends JFrame {
 			FileFilter ff = new FileNameExtensionFilter("Places", "places");
 			jfc.setAcceptAllFileFilterUsed(false);
 			jfc.setFileFilter(ff);
-			
+
 			int answer = jfc.showOpenDialog(gui);
 
 			if (answer != JFileChooser.APPROVE_OPTION)
 				return;
-			
-			
+			else {
+				File file = jfc.getSelectedFile();
+				String fileName = file.getAbsolutePath();
+				System.out.println("Loading: " + fileName);
+				try {
+					FileReader inFile = new FileReader(fileName);
+					BufferedReader in = new BufferedReader(inFile);
+					int lineNo = 0;
+					String line;
+					while ((line = in.readLine()) != null) {
+						lineNo++;
+						String[] strings = line.split(",");
+						Coordinates coordinates = new Coordinates(Integer.parseInt(strings[2]),
+								Integer.parseInt(strings[3]));
+						
+						Color color;
+						
+						if (strings[1].equals("Bus")) {
+							color = (Color.GREEN);
+						} else if (strings[1].equals("Underground")) {
+							color = Color.BLUE;
+						} else if (strings[1].equals("Train")) {
+							color = Color.RED;
+						} else
+							color = Color.BLACK;
+						
+						if (strings[0].equals("Named")) {
+							gui.addNamedToLists(coordinates, strings[4], strings[1], color);
+						} else if (strings[0].equals("Described")) {
+							gui.addDescribedToLists(coordinates, strings[4], strings[1], strings[5], color);
+						}
+					}
+				} catch (FileNotFoundException e) {
+					JOptionPane.showMessageDialog(gui, "File not found or missing: " + e);
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(gui, e);
+				}
+			}
+
 			/*
 			 * Både Load Places och Save ska visa en filöppningsdialog och fråga användaren
 			 * om filnamnet där platserna ska sparas/därifrån platserna ska läsas in.
@@ -94,16 +132,53 @@ public class GUIArchive extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			
+
 			JFileChooser jfc = new JFileChooser(".");
 			FileFilter ff = new FileNameExtensionFilter("Places", "places");
 			jfc.setAcceptAllFileFilterUsed(false);
 			jfc.setFileFilter(ff);
-			
+
 			int answer = jfc.showSaveDialog(gui);
 
 			if (answer != JFileChooser.APPROVE_OPTION)
 				return;
+			else {
+				int start, end;
+				File file = jfc.getSelectedFile();
+				String fileName = file.getAbsolutePath();
+				if (!fileName.contains(".")) {
+
+					end = fileName.length();
+					if (end > 7) {
+						start = end - 6;
+
+						/*
+						 * fileName = fileName.substring(0, fileName.lastIndexOf(".", end)); end =
+						 * fileName.length(); start = end - 6;
+						 */
+
+						if (start < 0 || !fileName.substring(start, end).equals(".places"))
+							fileName += ".places";
+					}
+					try {
+						System.out.println("Loading: " + fileName);
+						FileWriter outFile = new FileWriter(fileName);
+						PrintWriter out = new PrintWriter(outFile);
+						Collection<Location> list = gui.getLocations();
+						for (Location l : list) {
+							out.println(l);
+							System.out.println(l);
+						}
+						out.close();
+						gui.setSaved(true);
+					} catch (IOException e) {
+						JOptionPane.showMessageDialog(gui, e);
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(gui, "File must be a .places file!");
+				}
+			}
 			/*
 			 * Både Load Places och Save ska visa en filöppningsdialog och fråga användaren
 			 * om filnamnet där platserna ska sparas/därifrån platserna ska läsas in.
@@ -122,8 +197,10 @@ public class GUIArchive extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			if (gui.getChangesDone()) {
-				int answer = JOptionPane.showConfirmDialog(gui, "Are you sure you want to exit? You have unsaved changes.", "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (!gui.getSaved()) {
+				int answer = JOptionPane.showConfirmDialog(gui,
+						"Are you sure you want to exit? You have unsaved changes.", "Warning",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (answer == JOptionPane.OK_OPTION) {
 					System.exit(0);
 				}
