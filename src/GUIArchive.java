@@ -114,7 +114,7 @@ public class GUIArchive extends JFrame {
 						}
 					}
 				} catch (FileNotFoundException e) {
-					JOptionPane.showMessageDialog(gui, "File not found or missing: " + e);
+					JOptionPane.showMessageDialog(gui, e, "File not found or missing: ", JOptionPane.ERROR_MESSAGE);
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(gui, e);
 				}
@@ -176,7 +176,7 @@ public class GUIArchive extends JFrame {
 					}
 
 				} else {
-					JOptionPane.showMessageDialog(gui, "File must be a .places file!");
+					JOptionPane.showMessageDialog(gui, "File must be a .places file!", "Wrong file type", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			/*

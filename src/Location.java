@@ -33,6 +33,11 @@ public abstract class Location extends JComponent {
 		g.setColor(color);
 		g.fillPolygon(xes, yes, 3);
 	}
+	
+	public void setDisplayed (boolean b) {
+		this.setVisible(b);
+		this.setEnabled(b);
+	}
 
 	public String getName() {
 		return name;
