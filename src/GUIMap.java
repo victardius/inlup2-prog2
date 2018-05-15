@@ -222,10 +222,13 @@ class markerMouseActions extends MouseAdapter{
 		public void mouseClicked(MouseEvent mev) {
 			
 			System.out.println("i was clicked");
-			mev.getClass();
+			Location l = (Location)mev.getComponent();
+			
 			
 			
 		}
+		
+		
 	}
 
 	class searchListener implements ActionListener {
