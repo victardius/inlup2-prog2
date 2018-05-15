@@ -91,27 +91,48 @@ public class GUIMap extends JFrame {
 		mapArea.repaint();
 	}
 
+<<<<<<< HEAD
 	public void addDescribedToLists(Coordinates coordinates, String name, String category, String description,
 			Color color) {
 		saved = false;
+=======
+	public boolean getChangesDone() {
+		if (locationNames.isEmpty() || locationCoordinatess.isEmpty())
+			return false;
+		else
+			return true;
+	}
+
+	public void addDescribedToLists(Coordinates coordinates, String name, String category, String description, Color color) {
+>>>>>>> 1f2c8fa0d89ddde013c8a9f32740ac0fd276b5da
 		DescribedPlace place = new DescribedPlace(coordinates, name, category, description, color);
 		locationNames.put(name, place);
 		locationCoordinatess.put(coordinates, place);
 		paintLocation(place);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f2c8fa0d89ddde013c8a9f32740ac0fd276b5da
 
 	}
 
 	public void addNamedToLists(Coordinates coordinates, String name, String category, Color color) {
+<<<<<<< HEAD
 		saved = false;
+=======
+>>>>>>> 1f2c8fa0d89ddde013c8a9f32740ac0fd276b5da
 		NamedPlace place = new NamedPlace(coordinates, name, category, color);
 		locationNames.put(name, place);
 		locationCoordinatess.put(coordinates, place);
 		paintLocation(place);
+<<<<<<< HEAD
 	}
 
 	public Collection<Location> getLocations() {
 		Collection<Location> list = locationCoordinatess.values();
 		return list;
+=======
+>>>>>>> 1f2c8fa0d89ddde013c8a9f32740ac0fd276b5da
 	}
 
 	public Map<String, Location> getNameList() {
@@ -165,6 +186,7 @@ public class GUIMap extends JFrame {
 			int x = mev.getX();
 			int y = mev.getY();
 			
+<<<<<<< HEAD
 			categoryList.getSelectedIndex();
 			if (categoryList.getSelectedIndex() == 0) {
 				color = (Color.GREEN);
@@ -173,6 +195,17 @@ public class GUIMap extends JFrame {
 			} else if (categoryList.getSelectedIndex() == 2) {
 				color = Color.RED;
 			} else
+=======
+			
+			categoryList.getSelectedIndex();
+			if(categoryList.getSelectedIndex() == 0){
+				color = (Color.GREEN);}
+			else if(categoryList.getSelectedIndex() == 1){
+				color = Color.BLUE;}
+			else if(categoryList.getSelectedIndex() == 2) {
+				color = Color.RED;}
+			else
+>>>>>>> 1f2c8fa0d89ddde013c8a9f32740ac0fd276b5da
 				color = Color.BLACK;
 
 			if (x < mapArea.getImageWidth() && y < mapArea.getImageHeight()) {
@@ -194,12 +227,53 @@ public class GUIMap extends JFrame {
 					name = described.getName();
 					addDescribedToLists(coordinates, name, category, description, color);
 				}
+<<<<<<< HEAD
+=======
+				
+				
+
+//				System.out.println(x + "," + y + " " + category);
+//				Location marker = new Location(coordinates, color);
+//				mapArea.add(marker);
+//				System.out.println(marker.getCoordinates());
+//				marker.addMouseListener(m2);
+//				mapArea.removeMouseListener(ml);
+//				mapArea.setCursor(Cursor.getDefaultCursor());
+//				categoryList.clearSelection();
+//				repaint();
+>>>>>>> 1f2c8fa0d89ddde013c8a9f32740ac0fd276b5da
 
 			} else {
 				JOptionPane.showMessageDialog(mapArea, "Invalid location!");
 			}
 
 		}
+	}
+	
+	private void paintLocation(Location marker) {
+		
+		mapArea.add(marker);
+		marker.addMouseListener(m2);
+		mapArea.removeMouseListener(ml);
+		mapArea.setCursor(Cursor.getDefaultCursor());
+		categoryList.clearSelection();
+		repaint();
+		
+	}
+	
+class markerMouseActions extends MouseAdapter{
+		
+		@Override
+		public void mouseClicked(MouseEvent mev) {
+			
+			System.out.println("i was clicked");
+			Location l = (Location)mev.getComponent();
+			
+			
+			
+		}
+		
+		
 	}
 
 	private void paintLocation(Location marker) {
