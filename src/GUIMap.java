@@ -294,15 +294,6 @@ public class GUIMap extends JFrame {
 
 		}
 	}
-	
-	private void checkIfNull(String str) {
-		if(str == null) {
-			JOptionPane.showMessageDialog(mapArea, "Fields cant be empty!", "Invalid input",
-					JOptionPane.ERROR_MESSAGE);
-		}else {
-			return;
-		}
-	}
 
 	class markerMouseActions extends MouseAdapter {
 
