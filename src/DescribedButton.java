@@ -28,5 +28,5 @@ public class DescribedButton extends JPanel {
 	public String getDescription() {
 		return descriptionField.getText();
 	}
-	
+
 }

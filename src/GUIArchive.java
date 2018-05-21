@@ -88,16 +88,14 @@ public class GUIArchive extends JFrame {
 				try {
 					FileReader inFile = new FileReader(fileName);
 					BufferedReader in = new BufferedReader(inFile);
-					int lineNo = 0;
 					String line;
 					while ((line = in.readLine()) != null) {
-						lineNo++;
 						String[] strings = line.split(",");
 						Coordinates coordinates = new Coordinates(Integer.parseInt(strings[2]),
 								Integer.parseInt(strings[3]));
-						
+
 						Color color;
-						
+
 						if (strings[1].equals("Bus")) {
 							color = (Color.GREEN);
 						} else if (strings[1].equals("Underground")) {
@@ -106,13 +104,14 @@ public class GUIArchive extends JFrame {
 							color = Color.RED;
 						} else
 							color = Color.BLACK;
-						
+
 						if (strings[0].equals("Named")) {
 							gui.addNamedToLists(coordinates, strings[4], strings[1], color);
 						} else if (strings[0].equals("Described")) {
 							gui.addDescribedToLists(coordinates, strings[4], strings[1], strings[5], color);
 						}
 					}
+					gui.setSaved(true);
 				} catch (FileNotFoundException e) {
 					JOptionPane.showMessageDialog(gui, e, "File not found or missing: ", JOptionPane.ERROR_MESSAGE);
 				} catch (IOException e) {
@@ -176,7 +175,8 @@ public class GUIArchive extends JFrame {
 					}
 
 				} else {
-					JOptionPane.showMessageDialog(gui, "File must be a .places file!", "Wrong file type", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(gui, "File must be a .places file!", "Wrong file type",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			/*
