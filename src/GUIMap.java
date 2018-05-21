@@ -11,7 +11,6 @@ public class GUIMap extends JFrame {
 
 	private Map<String, ArrayList<Location>> locationNames = new HashMap<>();
 	private Map<Coordinates, Location> locationCoordinates = new HashMap<>();
-	private Map<String, ArrayList<Location>> locationCategory = new HashMap<>();
 	private ArrayList<Location> buses = new ArrayList<>();
 	private ArrayList<Location> trains = new ArrayList<>();
 	private ArrayList<Location> underground = new ArrayList<>();
@@ -91,10 +90,6 @@ public class GUIMap extends JFrame {
 		setSize(1000, 380);
 		setLocationRelativeTo(null);
 		setVisible(true);
-
-		locationCategory.put("Bus", buses);
-		locationCategory.put("Train", trains);
-		locationCategory.put("Underground", underground);
 
 	}
 
@@ -203,6 +198,18 @@ public class GUIMap extends JFrame {
 		selectionList.clear();
 	}
 
+	public void resetAll() {
+		locationNames.clear();
+		locationCoordinates.clear();
+		buses.clear();
+		trains.clear();
+		underground.clear();
+		selectionList.clear();
+		if (!(mapArea == null))
+			mapArea.removeAll();
+		repaint();
+	}
+
 	class newPositionListener implements ActionListener {
 
 		@Override
@@ -254,14 +261,16 @@ public class GUIMap extends JFrame {
 				Coordinates coordinates = new Coordinates(x, y);
 				String category = categoryList.getSelectedValue();
 				String name;
-				
+
 				if (locationCoordinates.containsKey(coordinates)) {
 					JOptionPane.showMessageDialog(mapArea, "There is already a location with these coordinates!",
 							"Invalid location", JOptionPane.ERROR_MESSAGE);
 				} else {
 
 					if (namedRadio.isSelected()) {
-						name = JOptionPane.showInputDialog("Name");
+						name = JOptionPane.showInputDialog(GUIMap.this, "Name", "Named location", JOptionPane.QUESTION_MESSAGE);
+						if (name == null)
+							return;
 						if (!name.trim().isEmpty())
 							addNamedToLists(coordinates, name, category, color);
 						else

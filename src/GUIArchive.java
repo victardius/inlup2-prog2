@@ -52,10 +52,13 @@ public class GUIArchive extends JFrame {
 
 			if (answer != JFileChooser.APPROVE_OPTION)
 				return;
-
-			File file = jfc.getSelectedFile();
-			String fileName = file.getAbsolutePath();
-			gui.setMap(fileName);
+			else if (isSaved()) {
+				gui.resetAll();
+				File file = jfc.getSelectedFile();
+				String fileName = file.getAbsolutePath();
+				gui.setMap(fileName);
+				gui.setSaved(true);
+			}
 
 			/*
 			 * Om man väljer New Map så visas en fildialog där användaren kan välja en bild
@@ -81,7 +84,9 @@ public class GUIArchive extends JFrame {
 
 			if (answer != JFileChooser.APPROVE_OPTION)
 				return;
-			else {
+			else if (isSaved()) {
+
+				gui.resetAll();
 				File file = jfc.getSelectedFile();
 				String fileName = file.getAbsolutePath();
 				System.out.println("Loading: " + fileName);
@@ -111,7 +116,6 @@ public class GUIArchive extends JFrame {
 							gui.addDescribedToLists(coordinates, strings[4], strings[1], strings[5], color);
 						}
 					}
-					gui.setSaved(true);
 				} catch (FileNotFoundException e) {
 					JOptionPane.showMessageDialog(gui, e, "File not found or missing: ", JOptionPane.ERROR_MESSAGE);
 				} catch (IOException e) {
@@ -197,14 +201,7 @@ public class GUIArchive extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			if (!gui.getSaved()) {
-				int answer = JOptionPane.showConfirmDialog(gui,
-						"Are you sure you want to exit? You have unsaved changes.", "Warning",
-						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-				if (answer == JOptionPane.OK_OPTION) {
-					System.exit(0);
-				}
-			} else {
+			if (isSaved()) {
 				System.exit(0);
 			}
 			/*
@@ -215,6 +212,21 @@ public class GUIArchive extends JFrame {
 			 */
 		}
 
+	}
+
+	private boolean isSaved() {
+		if (!gui.getSaved()) {
+			int answer = JOptionPane.showConfirmDialog(gui,
+					"Are you sure you want to proceed? You have unsaved changes.", "Warning", JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (answer == JOptionPane.OK_OPTION) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
 	}
 
 }
