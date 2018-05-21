@@ -109,13 +109,13 @@ public class GUIMap extends JFrame {
 		locationCategory.put(Category.Underground, underground);
 		locationCategory.put(Category.None, none);
 
-		buttonSetActive();
+		buttonSetActive(false);
 
 	}
 
-	private void buttonSetActive() {
+	private void buttonSetActive(boolean bool) {
 		for (JButton b : buttons) {
-			b.setEnabled(!b.isEnabled());
+			b.setEnabled(bool);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class GUIMap extends JFrame {
 		validate();
 		mapArea.revalidate();
 		mapArea.repaint();
-		buttonSetActive();
+		buttonSetActive(true);
 	}
 
 	public void addDescribedToLists(Coordinates coordinates, String name, Category category, String description) {
