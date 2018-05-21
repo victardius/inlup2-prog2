@@ -1,30 +1,35 @@
 import java.awt.*;
-import java.awt.List;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class GUIMap extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Map<String, ArrayList<Location>> locationNames = new HashMap<>();
 	private Map<Coordinates, Location> locationCoordinates = new HashMap<>();
-	private ArrayList<Location> buses = new ArrayList<>();
-	private ArrayList<Location> trains = new ArrayList<>();
-	private ArrayList<Location> underground = new ArrayList<>();
-	private ArrayList<Location> selectionList = new ArrayList<>();
+	private Map<Category, List<Location>> locationCategory = new HashMap<>();
+	private List<Location> buses = new ArrayList<>();
+	private List<Location> trains = new ArrayList<>();
+	private List<Location> underground = new ArrayList<>();
+	private List<Location> none = new ArrayList<>();
+	private List<Location> selectionList = new ArrayList<>();
+	private List<JButton> buttons = new ArrayList<>();
 	private JScrollPane scroll = null;
 	private DrawMap mapArea = null;
 	private DrawMap map;
 	private JButton newButton;
 	private getMousePosition ml = new getMousePosition();
 	private markerMouseActions m2 = new markerMouseActions();
-	private String[] cat = { "Bus", "Underground", "Train" };
-	private JList<String> categoryList = new JList<String>(cat);
+	private Category[] cat = { Category.Bus, Category.Underground, Category.Train };
+	private JList<Category> categoryList = new JList<>();
 	private JRadioButton namedRadio, describedRadio;
-	private Color color;
 	private boolean saved = true;
 	private boolean placingLocation = false;
 	private JTextField searchField;
@@ -34,6 +39,8 @@ public class GUIMap extends JFrame {
 		Box divideNorth = new Box(BoxLayout.PAGE_AXIS);
 		add(divideNorth, BorderLayout.NORTH);
 
+		categoryList.setListData(cat);
+		
 		setJMenuBar(new GUIArchive(this).getJMenuBar());
 
 		JPanel north = new JPanel();
@@ -41,6 +48,7 @@ public class GUIMap extends JFrame {
 		newButton = new JButton("New");
 		newButton.addActionListener(new newPositionListener());
 		north.add(newButton);
+		buttons.add(newButton);
 		namedRadio = new JRadioButton("Named", true);
 		describedRadio = new JRadioButton("Described");
 		ButtonGroup bg = new ButtonGroup();
@@ -55,15 +63,19 @@ public class GUIMap extends JFrame {
 		searchField.addFocusListener(new focusListener());
 		JButton searchButton = new JButton("Search");
 		north.add(searchButton);
+		buttons.add(searchButton);
 		searchButton.addActionListener(new searchListener());
 		JButton hideButton = new JButton("Hide");
 		north.add(hideButton);
+		buttons.add(hideButton);
 		hideButton.addActionListener(new hideListener());
 		JButton removeButton = new JButton("Remove");
 		north.add(removeButton);
+		buttons.add(removeButton);
 		removeButton.addActionListener(new removeListener());
 		JButton coordinatesButton = new JButton("Coordinates");
 		north.add(coordinatesButton);
+		buttons.add(coordinatesButton);
 		coordinatesButton.addActionListener(new coordinatesListener());
 
 		JPanel east = new JPanel();
@@ -83,6 +95,7 @@ public class GUIMap extends JFrame {
 		hideCategoriesButton.setAlignmentX(CENTER_ALIGNMENT);
 		eastLayout.add(hideCategoriesButton);
 		hideCategoriesButton.addActionListener(new hideCategoryListener());
+		buttons.add(hideCategoriesButton);
 
 		addWindowListener(new closeWindowListener());
 
@@ -91,6 +104,19 @@ public class GUIMap extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
+		locationCategory.put(Category.Bus, buses);
+		locationCategory.put(Category.Train, trains);
+		locationCategory.put(Category.Underground, underground);
+		locationCategory.put(Category.None, none);
+
+		buttonSetActive();
+
+	}
+
+	private void buttonSetActive() {
+		for (JButton b : buttons) {
+			b.setEnabled(!b.isEnabled());
+		}
 	}
 
 	public void setMap(String fileName) {
@@ -105,20 +131,20 @@ public class GUIMap extends JFrame {
 		validate();
 		mapArea.revalidate();
 		mapArea.repaint();
+		buttonSetActive();
 	}
 
-	public void addDescribedToLists(Coordinates coordinates, String name, String category, String description,
-			Color color) {
+	public void addDescribedToLists(Coordinates coordinates, String name, Category category, String description) {
 
-		DescribedPlace place = new DescribedPlace(coordinates, name, category, description, color);
+		DescribedPlace place = new DescribedPlace(coordinates, name, category, description);
 
 		addToLists(place);
 
 	}
 
-	public void addNamedToLists(Coordinates coordinates, String name, String category, Color color) {
+	public void addNamedToLists(Coordinates coordinates, String name, Category category) {
 
-		NamedPlace place = new NamedPlace(coordinates, name, category, color);
+		NamedPlace place = new NamedPlace(coordinates, name, category);
 
 		addToLists(place);
 
@@ -136,13 +162,7 @@ public class GUIMap extends JFrame {
 
 		locationCoordinates.put(place.getCoordinates(), place);
 
-		if (place.getCategory().equals("Bus")) {
-			buses.add(place);
-		} else if (place.getCategory().equals("Train")) {
-			trains.add(place);
-		} else if (place.getCategory().equals("Underground")) {
-			underground.add(place);
-		}
+		locationCategory.get(place.getCategory()).add(place);
 
 		paintLocation(place);
 		placingLocation = false;
@@ -151,13 +171,7 @@ public class GUIMap extends JFrame {
 	public void removeLocation(Location l) {
 		locationNames.remove(l.getName());
 		locationCoordinates.remove(l.getCoordinates());
-		if (l.getCategory().equals("Bus")) {
-			buses.remove(l);
-		} else if (l.getCategory().equals("Train")) {
-			trains.remove(l);
-		} else if (l.getCategory().equals("Underground")) {
-			underground.remove(l);
-		}
+		locationCategory.get(l.getCategory()).remove(l);
 	}
 
 	public Collection<Location> getLocations() {
@@ -191,7 +205,7 @@ public class GUIMap extends JFrame {
 		}
 	}
 
-	public void clearSelection() {
+	public void clearMarked() {
 		for (Location l : selectionList) {
 			setMarked(l, true);
 		}
@@ -216,24 +230,9 @@ public class GUIMap extends JFrame {
 		public void actionPerformed(ActionEvent ave) {
 
 			placingLocation = true;
+			newButton.setEnabled(false);
 			mapArea.addMouseListener(ml);
 			mapArea.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-
-			/*
-			 * En plats skapas genom att användaren väljer kategori i listan till höger,
-			 * väljer platstypen med hjälp av radioknapparna vid New-knappen och trycker på
-			 * knappen New. Då ska markören över kartan ändras till ett kors (för att
-			 * markera att nästa klick på kartan skapar en plats) och en klick på kartan
-			 * skapar en plats på den klickade positionen. Obs att det är tänkt att den
-			 * nedre triangelspetsen visar var platsen finns, så det behövs en viss
-			 * justering av koordinater för platsen. Om ingen kategori är markerad när en
-			 * plats skapas blir platsen kategorilös och dess färg blir svart. Om det redan
-			 * finns en plats på den klickade punkten ska ett felmeddelande ges – det är
-			 * endast tillåtet med en plats per position. Se beskrivningen av operationen
-			 * Coordinates nedan för lite mer information om detta. Efter att platsen är
-			 * skapad ska inte kartan vara mottaglig för klickning förrän användaren trycker
-			 * på knappen New igen.
-			 */
 		}
 
 	}
@@ -246,21 +245,10 @@ public class GUIMap extends JFrame {
 			int x = mev.getX();
 			int y = mev.getY();
 
-			categoryList.getSelectedIndex();
-			if (categoryList.getSelectedIndex() == 0) {
-				color = (Color.GREEN);
-			} else if (categoryList.getSelectedIndex() == 1) {
-				color = Color.BLUE;
-			} else if (categoryList.getSelectedIndex() == 2) {
-				color = Color.RED;
-			} else
-				color = Color.BLACK;
-
 			if (x < mapArea.getImageWidth() && y < mapArea.getImageHeight()) {
 
 				Coordinates coordinates = new Coordinates(x, y);
-				String category = categoryList.getSelectedValue();
-				String name;
+				Category category = categoryList.getSelectedValue();
 
 				if (locationCoordinates.containsKey(coordinates)) {
 					JOptionPane.showMessageDialog(mapArea, "There is already a location with these coordinates!",
@@ -268,31 +256,9 @@ public class GUIMap extends JFrame {
 				} else {
 
 					if (namedRadio.isSelected()) {
-						name = JOptionPane.showInputDialog(GUIMap.this, "Name", "Named location", JOptionPane.QUESTION_MESSAGE);
-						if (name == null)
-							return;
-						if (!name.trim().isEmpty())
-							addNamedToLists(coordinates, name, category, color);
-						else
-							JOptionPane.showMessageDialog(mapArea, "Name can't be empty", "Invalid input",
-									JOptionPane.ERROR_MESSAGE);
+						namedDialog(category, coordinates);
 					} else if (describedRadio.isSelected()) {
-						DescribedButton described = new DescribedButton();
-						int responce = JOptionPane.showConfirmDialog(GUIMap.this, described, "Described location",
-								JOptionPane.OK_CANCEL_OPTION);
-						if (responce != JOptionPane.OK_OPTION)
-							return;
-						String description = described.getDescription();
-						name = described.getName();
-						if (!name.trim().isEmpty())
-							if (!description.trim().isEmpty())
-								addDescribedToLists(coordinates, name, category, description, color);
-							else
-								JOptionPane.showMessageDialog(mapArea, "Description can't be empty", "Invalid input",
-										JOptionPane.ERROR_MESSAGE);
-						else
-							JOptionPane.showMessageDialog(mapArea, "Name can't be empty", "Invalid input",
-									JOptionPane.ERROR_MESSAGE);
+						describedDialog(category, coordinates);
 					}
 				}
 
@@ -301,7 +267,38 @@ public class GUIMap extends JFrame {
 						JOptionPane.ERROR_MESSAGE);
 			}
 
+			newButton.setEnabled(true);
+
 		}
+	}
+
+	private void namedDialog(Category category, Coordinates coordinates) {
+		
+		String name = JOptionPane.showInputDialog(GUIMap.this, "Name", "Named location", JOptionPane.QUESTION_MESSAGE);
+		if (name == null)
+			return;
+		if (!name.trim().isEmpty())
+			addNamedToLists(coordinates, name, category);
+		else
+			JOptionPane.showMessageDialog(mapArea, "Name can't be empty", "Invalid input", JOptionPane.ERROR_MESSAGE);
+	}
+
+	private void describedDialog(Category category, Coordinates coordinates) {
+		DescribedButton described = new DescribedButton();
+		int responce = JOptionPane.showConfirmDialog(GUIMap.this, described, "Described location",
+				JOptionPane.OK_CANCEL_OPTION);
+		if (responce != JOptionPane.OK_OPTION)
+			return;
+		String description = described.getDescription();
+		String name = described.getName();
+		if (!name.trim().isEmpty())
+			if (!description.trim().isEmpty())
+				addDescribedToLists(coordinates, name, category, description);
+			else
+				JOptionPane.showMessageDialog(mapArea, "Description can't be empty", "Invalid input",
+						JOptionPane.ERROR_MESSAGE);
+		else
+			JOptionPane.showMessageDialog(mapArea, "Name can't be empty", "Invalid input", JOptionPane.ERROR_MESSAGE);
 	}
 
 	class markerMouseActions extends MouseAdapter {
@@ -314,20 +311,10 @@ public class GUIMap extends JFrame {
 
 				if (mev.getButton() == MouseEvent.BUTTON1) {
 					setMarked(l, selectionList.contains(l));
-
 				}
 
 				else if (mev.getButton() == MouseEvent.BUTTON3) {
-					if (l instanceof NamedPlace) {
-						JOptionPane.showMessageDialog(mapArea,
-								"Name: " + l.getName() + "\n Coordinates: " + l.getCoordinatesToString());
-					} else {
-						l = (DescribedPlace) l;
-						String[] outprint = l.toString().split(",");
-						JOptionPane.showMessageDialog(mapArea, "Name: " + outprint[4] + "\n Coordinates: " + outprint[2]
-								+ ", " + outprint[3] + "\n Description: " + outprint[5]);
-					}
-
+					displayLocationInfo(l);
 				}
 
 			} else {
@@ -338,13 +325,25 @@ public class GUIMap extends JFrame {
 
 	}
 
+	private void displayLocationInfo(Location l) {
+		if (l instanceof NamedPlace) {
+			JOptionPane.showMessageDialog(mapArea,
+					"Name: " + l.getName() + "\n Coordinates: " + l.getCoordinatesToString());
+		} else {
+			l = (DescribedPlace) l;
+			String[] outprint = l.toString().split(",");
+			JOptionPane.showMessageDialog(mapArea, "Name: " + outprint[4] + "\n Coordinates: " + outprint[2] + ", "
+					+ outprint[3] + "\n Description: " + outprint[5]);
+		}
+	}
+
 	private void paintLocation(Location marker) {
 
 		mapArea.add(marker);
 		marker.addMouseListener(m2);
 		mapArea.removeMouseListener(ml);
 		mapArea.setCursor(Cursor.getDefaultCursor());
-		categoryList.clearSelection();
+		categoryList.setSelectedValue(null, true);
 		repaint();
 
 	}
@@ -378,17 +377,6 @@ public class GUIMap extends JFrame {
 			}
 
 			searchField.setText("Search");
-			/*
-			 * Operationen Search letar upp platser med det namn som matats in i sökfältet.
-			 * Den börjar med att avmarkera ev. platser som är markerade före sökningen,
-			 * därefter hämtar den söksträngen från sökfältet, och gör alla platser som har
-			 * detta namn synliga och markerade. Resultatet av sökningen presenteras alltså
-			 * genom att platser med detta namn blir markerade (och synliga om de var gömda
-			 * förut). Search-operationen förutsätter att man snabbt kan få fram alla
-			 * platser som har angivet namn. Det behövs en lämplig datastruktur som gör det
-			 * möjligt. Obs att vi låtsas som om antalet platser kan vara mycket stort,
-			 * sekvensiell genomgång av olämpliga datastrukturer kan därför inte accepteras.
-			 */
 		}
 
 	}
@@ -401,12 +389,6 @@ public class GUIMap extends JFrame {
 				l.setDisplayed(false);
 			}
 			selectionList.clear();
-
-			/*
-			 * Operationen Hide gömmer alla markerade platser och gör dem avmarkerade. Även
-			 * denna operation borde stödjas av någon lämplig datastruktur så att man inte
-			 * behöver gå igenom alla platser utan bara de som är markerade.
-			 */
 		}
 
 	}
@@ -442,11 +424,6 @@ public class GUIMap extends JFrame {
 						JOptionPane.showMessageDialog(mapArea, "Name: " + outprint[4] + "\n Coordinates: " + outprint[2]
 								+ ", " + outprint[3] + "\n Description: " + outprint[5]);
 					}
-					// for(locationCoordinates.Entry<Coordinates,Location> entry :
-					// locationCoordinates.keySet()){
-					// if(c.containsKey(h)){
-					// System.out.println("location found");
-					// }
 				} else {
 					JOptionPane.showMessageDialog(mapArea, "Location does not exist!", "Invalid location",
 							JOptionPane.ERROR_MESSAGE);
@@ -468,12 +445,6 @@ public class GUIMap extends JFrame {
 			}
 			selectionList.clear();
 			repaint();
-
-			/*
-			 * Operationen Remove tar bort alla markerade platser – inte bara så att de inte
-			 * syns på kartan utan objekten ska tas bort från alla datastrukturer där de kan
-			 * finnas.
-			 */
 		}
 
 	}
@@ -483,30 +454,11 @@ public class GUIMap extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ave) {
 
-			categoryList.getSelectedIndex();
-			if (categoryList.getSelectedIndex() == 0) {
-				for (Location l : buses) {
-					l.setDisplayed(false);
-				}
-			} else if (categoryList.getSelectedIndex() == 1) {
-				for (Location l : underground) {
-					l.setDisplayed(false);
-				}
-			} else if (categoryList.getSelectedIndex() == 2) {
-				for (Location l : trains) {
-					l.setDisplayed(false);
-				}
+			for (Location l : locationCategory.get(categoryList.getSelectedValue())) {
+				l.setDisplayed(false);
 			}
 
-			categoryList.clearSelection();
-
-			/*
-			 * Om man vill gömma alla platser som hör till en viss kategori så väljer man
-			 * kategorin i kategorilistan och klickar på knappen Hide category – platser som
-			 * hör till denna kategori ska göras osynliga. Om man vill göra alla platser som
-			 * hör till en viss kategori synliga så räcker det att markera kategorin i
-			 * listan
-			 */
+			categoryList.setSelectedValue(null, true);
 		}
 
 	}
@@ -517,20 +469,11 @@ public class GUIMap extends JFrame {
 		public void valueChanged(ListSelectionEvent lev) {
 
 			if (!lev.getValueIsAdjusting()) {
-				categoryList.getSelectedIndex();
-				if (categoryList.getSelectedIndex() == 0) {
-					for (Location l : buses) {
-						l.setDisplayed(true);
-					}
-				} else if (categoryList.getSelectedIndex() == 1) {
-					for (Location l : underground) {
-						l.setDisplayed(true);
-					}
-				} else if (categoryList.getSelectedIndex() == 2) {
-					for (Location l : trains) {
-						l.setDisplayed(true);
-					}
+
+				for (Location l : locationCategory.get(categoryList.getSelectedValue())) {
+					l.setDisplayed(true);
 				}
+
 			}
 
 		}

@@ -3,12 +3,15 @@ import java.awt.*;
 
 public abstract class Location extends JComponent {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Coordinates coordinates;
 	private String name;
-	private String category;
-	private Color color;
+	private Category category;
 
-	public Location(Coordinates coordinates, String name, String category, Color color) {
+	public Location(Coordinates coordinates, String name, Category category) {
 
 		name = name.trim();
 		this.coordinates = coordinates;
@@ -16,8 +19,7 @@ public abstract class Location extends JComponent {
 		if (category != null)
 			this.category = category;
 		else
-			this.category = "None";
-		this.color = color;
+			this.category = Category.None;
 
 		setBounds(coordinates.getX() - 10, coordinates.getY() - 20, 20, 20);
 		setPreferredSize(new Dimension(20, 20));
@@ -29,16 +31,9 @@ public abstract class Location extends JComponent {
 		int[] xes = { 0, 10, 20 };
 		int[] yes = { 0, 20, 0 };
 
-		g.setColor(color);
+		g.setColor(category.getColor());
 		g.fillPolygon(xes, yes, 3);
 	}
-
-	// protected void paintBorder(Graphics g) {
-	// int [] xes = {-2, 10, 22};
-	// int [] yes = {0, 22, 0};
-	//
-	// g.setColor(Color.PINK);
-	// }
 
 	public void setDisplayed(boolean b) {
 		this.setVisible(b);
@@ -57,7 +52,7 @@ public abstract class Location extends JComponent {
 		return coordinates;
 	}
 
-	public String getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 

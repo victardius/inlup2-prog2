@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
@@ -10,10 +9,14 @@ import javax.swing.*;
 
 public class GUIArchive extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JFileChooser jfc = new JFileChooser(".");
+	private FileFilter ff = new FileNameExtensionFilter("Places", "places");
 	JMenuBar mbar = new JMenuBar();
 	GUIMap gui;
-	// JScrollPane scroll = null;
-	// JPanel picturePanel = null;
 
 	GUIArchive(GUIMap map) {
 		gui = map;
@@ -32,6 +35,8 @@ public class GUIArchive extends JFrame {
 		JMenuItem exitItem = new JMenuItem("Exit");
 		exitItem.addActionListener(new exitListener());
 		archiveMenu.add(exitItem);
+
+		jfc.setAcceptAllFileFilterUsed(false);
 	}
 
 	public JMenuBar getJMenuBar() {
@@ -43,30 +48,13 @@ public class GUIArchive extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ave) {
 
-			JFileChooser jfc = new JFileChooser(".");
 			FileFilter ff = new FileNameExtensionFilter("Images", ImageIO.getReaderFileSuffixes());
-			jfc.setAcceptAllFileFilterUsed(false);
+
 			jfc.setFileFilter(ff);
+			checkIfSaved();
+			gui.setMap(jfc.getSelectedFile().getAbsolutePath());
+			gui.setSaved(true);
 
-			int answer = jfc.showOpenDialog(GUIArchive.this);
-
-			if (answer != JFileChooser.APPROVE_OPTION)
-				return;
-			else if (isSaved()) {
-				gui.resetAll();
-				File file = jfc.getSelectedFile();
-				String fileName = file.getAbsolutePath();
-				gui.setMap(fileName);
-				gui.setSaved(true);
-			}
-
-			/*
-			 * Om man väljer New Map så visas en fildialog där användaren kan välja en bild
-			 * (förhoppningsvis föreställande en karta): Bilden ska laddas in och visas i
-			 * fönstret. Om bilden är större än fönstret ska rulllistor visas så att man ska
-			 * kunna scrolla kartan. Man ska även kunna förstora fönstret genom att dra ut
-			 * det.
-			 */
 		}
 
 	}
@@ -75,70 +63,53 @@ public class GUIArchive extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			JFileChooser jfc = new JFileChooser(".");
-			FileFilter ff = new FileNameExtensionFilter("Places", "places");
-			jfc.setAcceptAllFileFilterUsed(false);
+
 			jfc.setFileFilter(ff);
 
-			int answer = jfc.showOpenDialog(gui);
+			checkIfSaved();
+			loadFile(jfc.getSelectedFile().getAbsolutePath());
 
-			if (answer != JFileChooser.APPROVE_OPTION)
-				return;
-			else if (isSaved()) {
-
-				gui.resetAll();
-				File file = jfc.getSelectedFile();
-				String fileName = file.getAbsolutePath();
-				System.out.println("Loading: " + fileName);
-				try {
-					FileReader inFile = new FileReader(fileName);
-					BufferedReader in = new BufferedReader(inFile);
-					String line;
-					while ((line = in.readLine()) != null) {
-						String[] strings = line.split(",");
-						Coordinates coordinates = new Coordinates(Integer.parseInt(strings[2]),
-								Integer.parseInt(strings[3]));
-
-						Color color;
-
-						if (strings[1].equals("Bus")) {
-							color = (Color.GREEN);
-						} else if (strings[1].equals("Underground")) {
-							color = Color.BLUE;
-						} else if (strings[1].equals("Train")) {
-							color = Color.RED;
-						} else
-							color = Color.BLACK;
-
-						if (strings[0].equals("Named")) {
-							gui.addNamedToLists(coordinates, strings[4], strings[1], color);
-						} else if (strings[0].equals("Described")) {
-							gui.addDescribedToLists(coordinates, strings[4], strings[1], strings[5], color);
-						}
-					}
-				} catch (FileNotFoundException e) {
-					JOptionPane.showMessageDialog(gui, e, "File not found or missing: ", JOptionPane.ERROR_MESSAGE);
-				} catch (IOException e) {
-					JOptionPane.showMessageDialog(gui, e);
-				}
-			}
-
-			/*
-			 * Både Load Places och Save ska visa en filöppningsdialog och fråga användaren
-			 * om filnamnet där platserna ska sparas/därifrån platserna ska läsas in.
-			 */
 		}
 
+	}
+
+	private void checkIfSaved() {
+		int answer = jfc.showOpenDialog(gui);
+
+		if (answer != JFileChooser.APPROVE_OPTION)
+			return;
+		else if (isSaved()) {
+			gui.resetAll();
+		}
+	}
+
+	private void loadFile(String fileName) {
+		try {
+			FileReader inFile = new FileReader(fileName);
+			BufferedReader in = new BufferedReader(inFile);
+			String line = null;
+			while ((line = in.readLine()) != null) {
+				String[] strings = line.split(",");
+				Coordinates coordinates = new Coordinates(Integer.parseInt(strings[2]), Integer.parseInt(strings[3]));
+
+				if (strings[0].equals("Named")) {
+					gui.addNamedToLists(coordinates, strings[4], Category.valueOf(strings[1]));
+				} else if (strings[0].equals("Described")) {
+					gui.addDescribedToLists(coordinates, strings[4], Category.valueOf(strings[1]), strings[5]);
+				}
+			}
+			in.close();
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(gui, e, "File not found or missing: ", JOptionPane.ERROR_MESSAGE);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(gui, e);
+		}
 	}
 
 	class saveListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-
-			JFileChooser jfc = new JFileChooser(".");
-			FileFilter ff = new FileNameExtensionFilter("Places", "places");
-			jfc.setAcceptAllFileFilterUsed(false);
 			jfc.setFileFilter(ff);
 
 			int answer = jfc.showSaveDialog(gui);
@@ -146,55 +117,41 @@ public class GUIArchive extends JFrame {
 			if (answer != JFileChooser.APPROVE_OPTION)
 				return;
 			else {
-				int start, end;
-				File file = jfc.getSelectedFile();
-				String fileName = file.getAbsolutePath();
-				if (!fileName.contains(".")) {
+				saveFile(jfc.getSelectedFile(), jfc.getSelectedFile().getAbsolutePath());
 
-					end = fileName.length();
-					if (end > 7) {
-						start = end - 6;
-
-						/*
-						 * fileName = fileName.substring(0, fileName.lastIndexOf(".", end)); end =
-						 * fileName.length(); start = end - 6;
-						 */
-
-						if (start < 0 || !fileName.substring(start, end).equals(".places"))
-							fileName += ".places";
-					}
-					try {
-						System.out.println("Loading: " + fileName);
-						FileWriter outFile = new FileWriter(fileName);
-						PrintWriter out = new PrintWriter(outFile);
-						Collection<Location> list = gui.getLocations();
-						for (Location l : list) {
-							out.println(l);
-							System.out.println(l);
-						}
-						out.close();
-						gui.setSaved(true);
-					} catch (IOException e) {
-						JOptionPane.showMessageDialog(gui, e);
-					}
-
-				} else {
-					JOptionPane.showMessageDialog(gui, "File must be a .places file!", "Wrong file type",
-							JOptionPane.ERROR_MESSAGE);
-				}
 			}
-			/*
-			 * Både Load Places och Save ska visa en filöppningsdialog och fråga användaren
-			 * om filnamnet där platserna ska sparas/därifrån platserna ska läsas in.
-			 * 
-			 * Platserna ska sparas på en textfil, med en plats per rad. På varje rad ska
-			 * platsens värden skrivas ut i en kommaseparerad lista, med platsens typ (Named
-			 * eller Described), platsens kategori (Bus, Underground, Train eller None om
-			 * platsen saknar kategori), x-koordinaten, y-koordinaten, platsens namn och (om
-			 * platsen är av typen Described) dess beskrivning.
-			 */
 		}
 
+	}
+
+	private void saveFile(File file, String fileName) {
+		if (fileName.endsWith(".places") || !fileName.contains(".")) {
+			int start, end;
+
+			end = fileName.length();
+			if (end > 7) {
+				start = end - 6;
+
+				if (start < 0 || !fileName.substring(start, end).equals(".places"))
+					fileName += ".places";
+			}
+			try {
+				FileWriter outFile = new FileWriter(fileName);
+				PrintWriter out = new PrintWriter(outFile);
+				Collection<Location> list = gui.getLocations();
+				for (Location l : list) {
+					out.println(l);
+				}
+				out.close();
+				gui.setSaved(true);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(gui, e);
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(gui, "File must be a .places file!", "Wrong file type",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	class exitListener implements ActionListener {
@@ -204,12 +161,6 @@ public class GUIArchive extends JFrame {
 			if (isSaved()) {
 				System.exit(0);
 			}
-			/*
-			 * Exit ska avsluta programexekveringen. Programmet ska även kunna avslutas via
-			 * stängningsrutan. Om det finns osparade förändringar ska det visas en
-			 * dialogruta som varnar om att det finns osparade ändringar och frågar om man
-			 * ändå vill avsluta – användaren har då möjligheten att avbryta operationen.
-			 */
 		}
 
 	}

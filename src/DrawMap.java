@@ -2,6 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DrawMap extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ImageIcon bg;
 	private int w, h;
 

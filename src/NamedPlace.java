@@ -1,9 +1,12 @@
-import java.awt.Color;
-
 public class NamedPlace extends Location {
 
-	public NamedPlace(Coordinates coordinates, String name, String category, Color color) {
-		super(coordinates, name, category, color);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public NamedPlace(Coordinates coordinates, String name, Category category) {
+		super(coordinates, name, category);
 	}
 
 	@Override
