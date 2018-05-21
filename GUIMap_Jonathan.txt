@@ -61,3 +61,40 @@ private JButton newButton;
 				color = Color.RED;
 			else
 				color = Color.BLACK;
+
+
+
+
+class coordinatesListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent ave) {
+
+			CoordinatesButton f = new CoordinatesButton();
+			int responce = JOptionPane.showConfirmDialog(GUIMap.this, f, "Enter coordinates",
+					JOptionPane.OK_CANCEL_OPTION);
+
+			if (responce != JOptionPane.OK_OPTION)
+				return;
+			int x = f.getXCoordinate();
+			int y = f.getYCoordinate();
+			System.out.println(x +" "+  y);
+			Coordinates h =new Coordinates(x,y);
+			if (locationCoordinates.containsKey(h)){
+				Location l = locationCoordinates.get(h);
+				selectionList.clear();
+				setMarked(l, false);
+				if (l instanceof NamedPlace) {
+					JOptionPane.showMessageDialog(mapArea,
+							"Name: " + l.getName() + "\n Coordinates: " + l.getCoordinatesToString());
+				} else {
+					l = (DescribedPlace) l;
+					String[] outprint = l.toString().split(",");
+					JOptionPane.showMessageDialog(mapArea, "Name: " + outprint[4] + "\n Coordinates: " + outprint[2]
+							+ ", " + outprint[3] + "\n Description: " + outprint[5]);
+				}
+			//			for(locationCoordinates.Entry<Coordinates,Location> entry : locationCoordinates.keySet()){
+//				if(c.containsKey(h)){
+//					System.out.println("location found");
+//				}
+			}
