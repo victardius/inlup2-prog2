@@ -2,9 +2,9 @@ import java.awt.Color;;
 
 public enum Category {
 	
-	Bus (Color.GREEN),
+	Bus (Color.RED),
 	Underground (Color.BLUE),
-	Train (Color.RED),
+	Train (Color.GREEN),
 	None (Color.BLACK);
 	
 	private Color c;
