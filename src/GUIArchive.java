@@ -51,9 +51,10 @@ public class GUIArchive extends JFrame {
 			FileFilter ff = new FileNameExtensionFilter("Images", ImageIO.getReaderFileSuffixes());
 
 			jfc.setFileFilter(ff);
-			checkIfSaved();
-			gui.setMap(jfc.getSelectedFile().getAbsolutePath());
-			gui.setSaved(true);
+			if (checkIfSaved()) {
+				gui.setMap(jfc.getSelectedFile().getAbsolutePath());
+				gui.setSaved(true);
+			}
 
 		}
 
@@ -66,20 +67,24 @@ public class GUIArchive extends JFrame {
 
 			jfc.setFileFilter(ff);
 
-			checkIfSaved();
-			loadFile(jfc.getSelectedFile().getAbsolutePath());
+			if (checkIfSaved()) {
+				loadFile(jfc.getSelectedFile().getAbsolutePath());
+			}
 
 		}
 
 	}
 
-	private void checkIfSaved() {
+	private boolean checkIfSaved() {
 		int answer = jfc.showOpenDialog(gui);
 
 		if (answer != JFileChooser.APPROVE_OPTION)
-			return;
+			return false;
 		else if (isSaved()) {
 			gui.resetAll();
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -103,6 +108,9 @@ public class GUIArchive extends JFrame {
 			JOptionPane.showMessageDialog(gui, e, "File not found or missing: ", JOptionPane.ERROR_MESSAGE);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(gui, e);
+		}catch (NullPointerException e) {
+			JOptionPane.showMessageDialog(gui, "Map must be loaded first", "No map available", JOptionPane.ERROR_MESSAGE);
+			gui.setSaved(true);
 		}
 	}
 
