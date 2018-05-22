@@ -218,6 +218,7 @@ public class GUIMap extends JFrame {
 		buses.clear();
 		trains.clear();
 		underground.clear();
+		none.clear();
 		selectionList.clear();
 		if (!(mapArea == null))
 			mapArea.removeAll();
