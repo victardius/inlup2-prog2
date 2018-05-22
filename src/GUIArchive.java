@@ -25,15 +25,15 @@ public class GUIArchive extends JFrame {
 		mbar.add(archiveMenu);
 		JMenuItem newMapItem = new JMenuItem("New Map");
 		archiveMenu.add(newMapItem);
-		newMapItem.addActionListener(new newListener());
+		newMapItem.addActionListener(new NewListener());
 		JMenuItem loadItem = new JMenuItem("Load Places");
 		archiveMenu.add(loadItem);
-		loadItem.addActionListener(new loadListener());
+		loadItem.addActionListener(new LoadListener());
 		JMenuItem saveItem = new JMenuItem("Save");
 		archiveMenu.add(saveItem);
-		saveItem.addActionListener(new saveListener());
+		saveItem.addActionListener(new SaveListener());
 		JMenuItem exitItem = new JMenuItem("Exit");
-		exitItem.addActionListener(new exitListener());
+		exitItem.addActionListener(new ExitListener());
 		archiveMenu.add(exitItem);
 
 		jfc.setAcceptAllFileFilterUsed(false);
@@ -43,7 +43,7 @@ public class GUIArchive extends JFrame {
 		return mbar;
 	}
 
-	class newListener implements ActionListener {
+	class NewListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -59,7 +59,7 @@ public class GUIArchive extends JFrame {
 
 	}
 
-	class loadListener implements ActionListener {
+	class LoadListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -106,7 +106,7 @@ public class GUIArchive extends JFrame {
 		}
 	}
 
-	class saveListener implements ActionListener {
+	class SaveListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -155,7 +155,7 @@ public class GUIArchive extends JFrame {
 		}
 	}
 
-	class exitListener implements ActionListener {
+	class ExitListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {

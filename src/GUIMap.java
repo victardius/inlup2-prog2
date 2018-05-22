@@ -25,8 +25,8 @@ public class GUIMap extends JFrame {
 	private DrawMap mapArea = null;
 	private DrawMap map;
 	private JButton newButton;
-	private getMousePosition ml = new getMousePosition();
-	private markerMouseActions m2 = new markerMouseActions();
+	private GetMousePosition ml = new GetMousePosition();
+	private MarkerMouseActions m2 = new MarkerMouseActions();
 	private Category[] cat = { Category.Bus, Category.Underground, Category.Train };
 	private JList<Category> categoryList = new JList<>();
 	private JRadioButton namedRadio, describedRadio;
@@ -46,7 +46,7 @@ public class GUIMap extends JFrame {
 		JPanel north = new JPanel();
 		divideNorth.add(north);
 		newButton = new JButton("New");
-		newButton.addActionListener(new newPositionListener());
+		newButton.addActionListener(new NewPositionListener());
 		north.add(newButton);
 		buttons.add(newButton);
 		namedRadio = new JRadioButton("Named", true);
@@ -60,23 +60,23 @@ public class GUIMap extends JFrame {
 		north.add(verticalBox);
 		searchField = new JTextField("Search", 10);
 		north.add(searchField);
-		searchField.addFocusListener(new focusListener());
+		searchField.addFocusListener(new FocusingListener());
 		JButton searchButton = new JButton("Search");
 		north.add(searchButton);
 		buttons.add(searchButton);
-		searchButton.addActionListener(new searchListener());
+		searchButton.addActionListener(new SearchListener());
 		JButton hideButton = new JButton("Hide");
 		north.add(hideButton);
 		buttons.add(hideButton);
-		hideButton.addActionListener(new hideListener());
+		hideButton.addActionListener(new HideListener());
 		JButton removeButton = new JButton("Remove");
 		north.add(removeButton);
 		buttons.add(removeButton);
-		removeButton.addActionListener(new removeListener());
+		removeButton.addActionListener(new RemoveListener());
 		JButton coordinatesButton = new JButton("Coordinates");
 		north.add(coordinatesButton);
 		buttons.add(coordinatesButton);
-		coordinatesButton.addActionListener(new coordinatesListener());
+		coordinatesButton.addActionListener(new CoordinatesListener());
 
 		JPanel east = new JPanel();
 		add(east, BorderLayout.EAST);
@@ -90,14 +90,14 @@ public class GUIMap extends JFrame {
 		categoryList.setFixedCellWidth(150);
 		categoryList.setVisibleRowCount(10);
 		eastLayout.add(new JScrollPane(categoryList));
-		categoryList.addListSelectionListener(new listListener());
+		categoryList.addListSelectionListener(new ListListener());
 		JButton hideCategoriesButton = new JButton("Hide categories");
 		hideCategoriesButton.setAlignmentX(CENTER_ALIGNMENT);
 		eastLayout.add(hideCategoriesButton);
-		hideCategoriesButton.addActionListener(new hideCategoryListener());
+		hideCategoriesButton.addActionListener(new HideCategoryListener());
 		buttons.add(hideCategoriesButton);
 
-		addWindowListener(new closeWindowListener());
+		addWindowListener(new CloseWindowListener());
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setSize(1000, 380);
@@ -224,7 +224,7 @@ public class GUIMap extends JFrame {
 		repaint();
 	}
 
-	class newPositionListener implements ActionListener {
+	class NewPositionListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -237,7 +237,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class getMousePosition extends MouseAdapter {
+	class GetMousePosition extends MouseAdapter {
 
 		@Override
 		public void mouseClicked(MouseEvent mev) {
@@ -301,7 +301,7 @@ public class GUIMap extends JFrame {
 			JOptionPane.showMessageDialog(mapArea, "Name can't be empty", "Invalid input", JOptionPane.ERROR_MESSAGE);
 	}
 
-	class markerMouseActions extends MouseAdapter {
+	class MarkerMouseActions extends MouseAdapter {
 
 		@Override
 		public void mouseClicked(MouseEvent mev) {
@@ -359,7 +359,7 @@ public class GUIMap extends JFrame {
 		}
 	}
 
-	class searchListener implements ActionListener {
+	class SearchListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -381,7 +381,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class hideListener implements ActionListener {
+	class HideListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -393,7 +393,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class coordinatesListener implements ActionListener {
+	class CoordinatesListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -435,7 +435,7 @@ public class GUIMap extends JFrame {
 		}
 	}
 
-	class removeListener implements ActionListener {
+	class RemoveListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -449,7 +449,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class hideCategoryListener implements ActionListener {
+	class HideCategoryListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -463,7 +463,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class listListener implements ListSelectionListener {
+	class ListListener implements ListSelectionListener {
 
 		@Override
 		public void valueChanged(ListSelectionEvent lev) {
@@ -480,7 +480,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class focusListener implements FocusListener {
+	class FocusingListener implements FocusListener {
 
 		@Override
 		public void focusGained(FocusEvent fev) {
@@ -495,7 +495,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class closeWindowListener extends WindowAdapter {
+	class CloseWindowListener extends WindowAdapter {
 
 		public void windowClosing(WindowEvent wev) {
 			if (!saved) {
