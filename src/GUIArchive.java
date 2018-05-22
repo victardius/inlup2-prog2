@@ -133,7 +133,8 @@ public class GUIArchive extends JFrame {
 				start = end - 6;
 
 				if (start < 0 || !fileName.substring(start, end).equals(".places"))
-					fileName += ".places";
+					if (!fileName.endsWith(".places"))
+						fileName += ".places";
 			}
 			try {
 				FileWriter outFile = new FileWriter(fileName);

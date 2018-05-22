@@ -3,34 +3,34 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="GUIMap.removeListener" project="inlup2-prog2" file="/inlup2-prog2/src/GUIMap.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1083" y="326"/>    
+    <position height="99" width="194" x="-115" y="1063"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="GUIMap.coordinatesListener" project="inlup2-prog2" 
-    file="/inlup2-prog2/src/GUIMap.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1317" y="326"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" name="GUIArchive" project="inlup2-prog2" file="/inlup2-prog2/src/GUIArchive.java" 
+  <class id="2" language="java" name="GUIArchive" project="inlup2-prog2" file="/inlup2-prog2/src/GUIArchive.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="445" y="70"/>    
+    <position height="243" width="148" x="811" y="83"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="NamedPlace" project="inlup2-prog2" file="/inlup2-prog2/src/NamedPlace.java" 
+  <class id="3" language="java" name="NamedPlace" project="inlup2-prog2" file="/inlup2-prog2/src/NamedPlace.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2484" y="326"/>    
+    <position height="117" width="229" x="1010" y="1346"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="Run" project="inlup2-prog2" file="/inlup2-prog2/src/Run.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="113" x="272" y="83"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,61 +39,61 @@
   </class>  
   <class id="5" language="java" name="GUIArchive.loadListener" project="inlup2-prog2" 
     file="/inlup2-prog2/src/GUIArchive.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="147" y="326"/>    
+    <position height="99" width="194" x="343" y="366"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="GUIArchive.saveListener" project="inlup2-prog2" 
-    file="/inlup2-prog2/src/GUIArchive.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="381" y="326"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="GUIMap" project="inlup2-prog2" file="/inlup2-prog2/src/GUIMap.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1648" y="79"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" name="GUIArchive.exitListener" project="inlup2-prog2" 
-    file="/inlup2-prog2/src/GUIArchive.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="615" y="326"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="9" language="java" name="GUIMap.searchListener" project="inlup2-prog2" file="/inlup2-prog2/src/GUIMap.java" 
+  <class id="6" language="java" name="GUIMap.listListener" project="inlup2-prog2" file="/inlup2-prog2/src/GUIMap.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1785" y="326"/>    
+    <position height="99" width="214" x="119" y="1063"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="DescribedPlace" project="inlup2-prog2" 
+  <class id="7" language="java" name="GUIMap.focusListener" project="inlup2-prog2" file="/inlup2-prog2/src/GUIMap.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="176" x="373" y="1063"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="NewLocationBox" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/NewLocationBox.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="81" width="120" x="1348" y="83"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="DescribedPlace" project="inlup2-prog2" 
     file="/inlup2-prog2/src/DescribedPlace.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2735" y="344"/>    
+    <position height="153" width="275" x="1279" y="1346"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="GUIMap.hideCategoryListener" project="inlup2-prog2" 
+  <class id="10" language="java" name="GUIMap.hideCategoryListener" project="inlup2-prog2" 
     file="/inlup2-prog2/src/GUIMap.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2019" y="326"/>    
+    <position height="99" width="194" x="589" y="1063"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="Coordinates" project="inlup2-prog2" file="/inlup2-prog2/src/Coordinates.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="138" x="1594" y="1346"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -102,7 +102,7 @@
   </class>  
   <class id="12" language="java" name="GUIArchive.newListener" project="inlup2-prog2" 
     file="/inlup2-prog2/src/GUIArchive.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="849" y="326"/>    
+    <position height="99" width="194" x="577" y="366"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -111,66 +111,320 @@
   </class>  
   <class id="13" language="java" name="GUIMap.hideListener" project="inlup2-prog2" file="/inlup2-prog2/src/GUIMap.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2253" y="326"/>    
+    <position height="99" width="194" x="823" y="1063"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="Location" project="inlup2-prog2" file="/inlup2-prog2/src/Location.java" 
+  <class id="14" language="java" name="GUIMap.markerMouseActions" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/GUIMap.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="182" x="1057" y="1063"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="GUIMap.newPositionListener" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/GUIMap.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="194" x="1530" y="1063"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="DrawMap" project="inlup2-prog2" file="/inlup2-prog2/src/DrawMap.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2589" y="133"/>    
+    <position height="207" width="178" x="1764" y="1063"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <nesting id="15">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="1"/>  
+  <class id="17" language="java" name="GUIMap.coordinatesListener" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/GUIMap.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="194" x="1982" y="1063"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="GUIArchive.saveListener" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/GUIArchive.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="194" x="811" y="366"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="GUIMap" project="inlup2-prog2" file="/inlup2-prog2/src/GUIMap.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="657" width="324" x="1279" y="366"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="GUIMap.getMousePosition" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/GUIMap.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="182" x="2216" y="1063"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="CoordinatesButton" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/CoordinatesButton.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="137" x="1858" y="83"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="GUIArchive.exitListener" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/GUIArchive.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="194" x="1045" y="366"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="GUIMap.searchListener" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/GUIMap.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="194" x="2459" y="1063"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="DescribedButton" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/DescribedButton.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="154" x="2386" y="83"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="25" language="java" name="Category" project="inlup2-prog2" file="/inlup2-prog2/src/Category.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="139" x="2419" y="1346"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="26" language="java" name="GUIMap.closeWindowListener" project="inlup2-prog2" 
+    file="/inlup2-prog2/src/GUIMap.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="199" x="2693" y="1063"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" name="Location" project="inlup2-prog2" file="/inlup2-prog2/src/Location.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="211" x="1279" y="1063"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="28">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="29" name="mapArea"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="31">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="18"/>  
   </nesting>  
-  <nesting id="16">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="13"/>  
-  </nesting>  
-  <nesting id="17">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="2"/>  
-  </nesting>  
-  <generalization id="18">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="14"/>  
+  <association id="32">    
+    <bendpoint x="2428" y="1063"/>    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="33" name="cat"/>      
+      <multiplicity id="34" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="27"/>  
   </generalization>  
-  <nesting id="19">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="11"/>  
+  <nesting id="36">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="7"/>  
   </nesting>  
-  <nesting id="20">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="6"/>  
+  <nesting id="37">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="17"/>  
   </nesting>  
-  <nesting id="21">    
-    <end type="SOURCE" refId="3"/>    
+  <nesting id="38">    
+    <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="12"/>  
   </nesting>  
-  <generalization id="22">    
-    <end type="SOURCE" refId="10"/>    
+  <nesting id="39">    
+    <end type="SOURCE" refId="19"/>    
     <end type="TARGET" refId="14"/>  
-  </generalization>  
-  <nesting id="23">    
+  </nesting>  
+  <nesting id="40">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="10"/>  
+  </nesting>  
+  <association id="41">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="42" name="m2"/>      
+      <multiplicity id="43" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="44">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="45" name="coordinates"/>      
+      <multiplicity id="46" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="47">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <association id="48">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="49" name="category"/>      
+      <multiplicity id="50" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="51">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="52" name="underground"/>      
+      <multiplicity id="53" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="54">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="55" name="locationCoordinates"/>      
+      <multiplicity id="56" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="57">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="58" name="map"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="60">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="23"/>  
+  </nesting>  
+  <association id="61">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="62" name="gui"/>      
+      <multiplicity id="63" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="64">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="65" name="ml"/>      
+      <multiplicity id="66" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="67">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="15"/>  
+  </nesting>  
+  <nesting id="68">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="20"/>  
+  </nesting>  
+  <nesting id="69">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <association id="70">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="71" name="trains"/>      
+      <multiplicity id="72" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="73">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="74" name="buses"/>      
+      <multiplicity id="75" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="76">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <nesting id="77">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="26"/>  
+  </nesting>  
+  <generalization id="78">    
     <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <nesting id="79">    
+    <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="5"/>  
   </nesting>  
-  <nesting id="24">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="8"/>  
+  <association id="80">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="81" name="none"/>      
+      <multiplicity id="82" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="83">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="22"/>  
   </nesting>  
-  <nesting id="25">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="9"/>  
-  </nesting>  
+  <association id="84">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="85" name="selectionList"/>      
+      <multiplicity id="86" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
