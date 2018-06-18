@@ -6,10 +6,10 @@ import javax.swing.JTextField;
 public class DescribedButton extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	JTextField nameField = new JTextField(10);
-	JTextField descriptionField = new JTextField(10);
+	private JTextField nameField = new JTextField(10);
+	private JTextField descriptionField = new JTextField(10);
 
-	DescribedButton() {
+	protected DescribedButton() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JPanel row1 = new JPanel();
 		row1.add(new JLabel("Name:"));
@@ -25,7 +25,7 @@ public class DescribedButton extends JPanel {
 		return nameField.getText();
 	}
 
-	public String getDescription() {
+	protected String getDescription() {
 		return descriptionField.getText();
 	}
 

@@ -1,4 +1,4 @@
-public class DescribedPlace extends Location {
+public class DescribedPlace extends Position {
 
 	/**
 	 * 
@@ -6,13 +6,13 @@ public class DescribedPlace extends Location {
 	private static final long serialVersionUID = 1L;
 	private String description;
 
-	public DescribedPlace(Coordinates coordinates, String name, Category category, String description) {
+	protected DescribedPlace(Coordinates coordinates, String name, Category category, String description) {
 		super(coordinates, name, category);
 		description = description.trim();
 		this.description = description;
 	}
 
-	public String getDescription() {
+	protected String getDescription() {
 		return description;
 	}
 

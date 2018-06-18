@@ -4,12 +4,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 class CoordinatesButton extends JPanel {
-	
-	private static final long serialVersionUID = 1L;
-	JTextField xCoordinate = new JTextField(3);
-	JTextField yCoordinate = new JTextField(3);
 
-	CoordinatesButton() {
+	private static final long serialVersionUID = 1L;
+	private JTextField xCoordinate = new JTextField(3);
+	private JTextField yCoordinate = new JTextField(3);
+
+	protected CoordinatesButton() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JPanel row1 = new JPanel();
 		row1.add(new JLabel("X:"));
@@ -21,11 +21,11 @@ class CoordinatesButton extends JPanel {
 		add(row2);
 	}
 
-	public int getXCoordinate() {
+	protected int getXCoordinate() {
 		return Integer.parseInt(xCoordinate.getText());
 	}
 
-	public int getYCoordinate() {
+	protected int getYCoordinate() {
 		return Integer.parseInt(yCoordinate.getText());
 	}
 }

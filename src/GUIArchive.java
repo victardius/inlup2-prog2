@@ -15,10 +15,10 @@ public class GUIArchive extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JFileChooser jfc = new JFileChooser(".");
 	private FileFilter ff = new FileNameExtensionFilter("Places", "places");
-	JMenuBar mbar = new JMenuBar();
-	GUIMap gui;
+	private JMenuBar mbar = new JMenuBar();
+	private GUIMap gui;
 
-	GUIArchive(GUIMap map) {
+	protected GUIArchive(GUIMap map) {
 		gui = map;
 		setJMenuBar(mbar);
 		JMenu archiveMenu = new JMenu("Archive");
@@ -43,7 +43,7 @@ public class GUIArchive extends JFrame {
 		return mbar;
 	}
 
-	class NewListener implements ActionListener {
+	private class NewListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -60,7 +60,7 @@ public class GUIArchive extends JFrame {
 
 	}
 
-	class LoadListener implements ActionListener {
+	private class LoadListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -114,7 +114,7 @@ public class GUIArchive extends JFrame {
 		}
 	}
 
-	class SaveListener implements ActionListener {
+	private class SaveListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -147,8 +147,8 @@ public class GUIArchive extends JFrame {
 			try {
 				FileWriter outFile = new FileWriter(fileName);
 				PrintWriter out = new PrintWriter(outFile);
-				Collection<Location> list = gui.getLocations();
-				for (Location l : list) {
+				Collection<Position> list = gui.getLocations();
+				for (Position l : list) {
 					out.println(l);
 				}
 				out.close();
@@ -163,7 +163,7 @@ public class GUIArchive extends JFrame {
 		}
 	}
 
-	class ExitListener implements ActionListener {
+	private class ExitListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {

@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class Location extends JComponent {
+public abstract class Position extends JComponent {
 
 	/**
 	 * 
@@ -11,7 +11,7 @@ public abstract class Location extends JComponent {
 	private String name;
 	private Category category;
 
-	public Location(Coordinates coordinates, String name, Category category) {
+	protected Position(Coordinates coordinates, String name, Category category) {
 
 		name = name.trim();
 		this.coordinates = coordinates;
@@ -35,7 +35,7 @@ public abstract class Location extends JComponent {
 		g.fillPolygon(xes, yes, 3);
 	}
 
-	public void setDisplayed(boolean b) {
+	protected void setDisplayed(boolean b) {
 		this.setVisible(b);
 		this.setEnabled(b);
 	}
@@ -44,15 +44,15 @@ public abstract class Location extends JComponent {
 		return name;
 	}
 
-	public String getCoordinatesToString() {
+	protected String getCoordinatesToString() {
 		return coordinates.getX() + "," + coordinates.getY();
 	}
 
-	public Coordinates getCoordinates() {
+	protected Coordinates getCoordinates() {
 		return coordinates;
 	}
 
-	public Category getCategory() {
+	protected Category getCategory() {
 		return category;
 	}
 

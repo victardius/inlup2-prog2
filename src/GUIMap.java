@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -12,15 +11,11 @@ public class GUIMap extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<String, ArrayList<Location>> locationNames = new HashMap<>();
-	private Map<Coordinates, Location> locationCoordinates = new HashMap<>();
-	private Map<Category, List<Location>> locationCategory = new HashMap<>();
-	private List<Location> buses = new ArrayList<>();
-	private List<Location> trains = new ArrayList<>();
-	private List<Location> underground = new ArrayList<>();
-	private List<Location> none = new ArrayList<>();
-	private List<Location> selectionList = new ArrayList<>();
-	private List<JButton> buttons = new ArrayList<>();
+	private Map<String, Collection<Position>> locationNames = new HashMap<>();
+	private Map<Coordinates, Position> locationCoordinates = new HashMap<>();
+	private Map<Category, Collection<Position>> locationCategory = new HashMap<>();
+	private Collection<Position> selectionList = new ArrayList<>();
+	private Collection<JButton> buttons = new ArrayList<>();
 	private JScrollPane scroll = null;
 	private DrawMap mapArea = null;
 	private DrawMap map;
@@ -35,12 +30,12 @@ public class GUIMap extends JFrame {
 	private JTextField searchField;
 	private String searchName;
 
-	GUIMap() {
+	protected GUIMap() {
 		Box divideNorth = new Box(BoxLayout.PAGE_AXIS);
 		add(divideNorth, BorderLayout.NORTH);
 
 		categoryList.setListData(cat);
-		
+
 		setJMenuBar(new GUIArchive(this).getJMenuBar());
 
 		JPanel north = new JPanel();
@@ -104,11 +99,6 @@ public class GUIMap extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
-		locationCategory.put(Category.Bus, buses);
-		locationCategory.put(Category.Train, trains);
-		locationCategory.put(Category.Underground, underground);
-		locationCategory.put(Category.None, none);
-
 		buttonSetActive(false);
 
 	}
@@ -119,7 +109,7 @@ public class GUIMap extends JFrame {
 		}
 	}
 
-	public void setMap(String fileName) {
+	protected void setMap(String fileName) {
 		if (map != null) {
 			remove(scroll);
 		}
@@ -150,40 +140,47 @@ public class GUIMap extends JFrame {
 
 	}
 
-	public void addToLists(Location place) {
+	public void addToLists(Position place) {
 		saved = false;
 		if (locationNames.containsKey(place.getName().toLowerCase())) {
 			locationNames.get(place.getName().toLowerCase()).add(place);
 		} else {
-			ArrayList<Location> list = new ArrayList<>();
+			Collection<Position> list = new ArrayList<>();
 			list.add(place);
 			locationNames.put(place.getName().toLowerCase(), list);
 		}
 
 		locationCoordinates.put(place.getCoordinates(), place);
+		Category c = place.getCategory();
 
-		locationCategory.get(place.getCategory()).add(place);
+		if (locationCategory.containsKey(c))
+			locationCategory.get(c).add(place);
+		else {
+			Collection<Position> list = new ArrayList<>();
+			list.add(place);
+			locationCategory.put(c, list);
+		}
 
 		paintLocation(place);
 		placingLocation = false;
 	}
 
-	public void removeLocation(Location l) {
+	public void removeLocation(Position l) {
 		locationNames.remove(l.getName());
 		locationCoordinates.remove(l.getCoordinates());
 		locationCategory.get(l.getCategory()).remove(l);
 	}
 
-	public Collection<Location> getLocations() {
-		Collection<Location> list = locationCoordinates.values();
+	public Collection<Position> getLocations() {
+		Collection<Position> list = locationCoordinates.values();
 		return list;
 	}
 
-	public Map<String, ArrayList<Location>> getNameList() {
+	public Map<String, Collection<Position>> getNameList() {
 		return locationNames;
 	}
 
-	public Map<Coordinates, Location> getPositionList() {
+	public Map<Coordinates, Position> getPositionList() {
 		return locationCoordinates;
 	}
 
@@ -195,7 +192,7 @@ public class GUIMap extends JFrame {
 		saved = b;
 	}
 
-	public void setMarked(Location l, boolean b) {
+	public void setMarked(Position l, boolean b) {
 		if (b) {
 			selectionList.remove(l);
 			l.setBorder(null);
@@ -206,7 +203,7 @@ public class GUIMap extends JFrame {
 	}
 
 	public void clearMarked() {
-		for (Location l : selectionList) {
+		for (Position l : selectionList) {
 			setMarked(l, true);
 		}
 		selectionList.clear();
@@ -215,10 +212,6 @@ public class GUIMap extends JFrame {
 	public void resetAll() {
 		locationNames.clear();
 		locationCoordinates.clear();
-		buses.clear();
-		trains.clear();
-		underground.clear();
-		none.clear();
 		selectionList.clear();
 		if (!(mapArea == null))
 			mapArea.removeAll();
@@ -274,7 +267,7 @@ public class GUIMap extends JFrame {
 	}
 
 	private void namedDialog(Category category, Coordinates coordinates) {
-		
+
 		String name = JOptionPane.showInputDialog(GUIMap.this, "Name", "Named location", JOptionPane.QUESTION_MESSAGE);
 		if (name == null)
 			return;
@@ -308,7 +301,7 @@ public class GUIMap extends JFrame {
 		public void mouseClicked(MouseEvent mev) {
 
 			if (!placingLocation) {
-				Location l = (Location) mev.getComponent();
+				Position l = (Position) mev.getComponent();
 
 				if (mev.getButton() == MouseEvent.BUTTON1) {
 					setMarked(l, selectionList.contains(l));
@@ -326,7 +319,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	private void displayLocationInfo(Location l) {
+	private void displayLocationInfo(Position l) {
 		if (l instanceof NamedPlace) {
 			JOptionPane.showMessageDialog(mapArea,
 					"Name: " + l.getName() + "\n Coordinates: " + l.getCoordinatesToString());
@@ -338,7 +331,7 @@ public class GUIMap extends JFrame {
 		}
 	}
 
-	private void paintLocation(Location marker) {
+	private void paintLocation(Position marker) {
 
 		mapArea.add(marker);
 		marker.addMouseListener(m2);
@@ -350,11 +343,11 @@ public class GUIMap extends JFrame {
 	}
 
 	private void removeSelections() {
-		ArrayList<Location> removeList = new ArrayList<>();
+		Collection<Position> removeList = new ArrayList<>();
 		removeList.addAll(selectionList);
 
 		if (!selectionList.isEmpty()) {
-			for (Location l : removeList)
+			for (Position l : removeList)
 				setMarked(l, true);
 			selectionList.clear();
 		}
@@ -368,7 +361,7 @@ public class GUIMap extends JFrame {
 			removeSelections();
 
 			if (locationNames.containsKey(searchName))
-				for (Location l : locationNames.get(searchName)) {
+				for (Position l : locationNames.get(searchName)) {
 					l.setDisplayed(true);
 					setMarked(l, false);
 				}
@@ -386,7 +379,7 @@ public class GUIMap extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			for (Location l : selectionList) {
+			for (Position l : selectionList) {
 				l.setDisplayed(false);
 			}
 			selectionList.clear();
@@ -414,7 +407,7 @@ public class GUIMap extends JFrame {
 				Coordinates h = new Coordinates(x, y);
 				if (locationCoordinates.containsKey(h)) {
 					System.out.println("found location");
-					Location l = locationCoordinates.get(h);
+					Position l = locationCoordinates.get(h);
 					setMarked(l, false);
 					if (l instanceof NamedPlace) {
 						JOptionPane.showMessageDialog(mapArea,
@@ -440,7 +433,7 @@ public class GUIMap extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			for (Location l : selectionList) {
+			for (Position l : selectionList) {
 				removeLocation(l);
 				mapArea.remove(l);
 			}
@@ -455,11 +448,16 @@ public class GUIMap extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ave) {
 
-			for (Location l : locationCategory.get(categoryList.getSelectedValue())) {
+			try {
+			for (Position l : locationCategory.get(categoryList.getSelectedValue())) {
 				l.setDisplayed(false);
 			}
 
 			categoryList.setSelectedValue(null, true);
+			}catch(NullPointerException e) {
+				JOptionPane.showMessageDialog(mapArea, "You have to select a category first!", "Invalid selection",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 	}
@@ -471,7 +469,7 @@ public class GUIMap extends JFrame {
 
 			if (!lev.getValueIsAdjusting()) {
 
-				for (Location l : locationCategory.get(categoryList.getSelectedValue())) {
+				for (Position l : locationCategory.get(categoryList.getSelectedValue())) {
 					l.setDisplayed(true);
 				}
 

@@ -9,7 +9,7 @@ public class DrawMap extends JPanel {
 	private ImageIcon bg;
 	private int w, h;
 
-	public DrawMap(String fileName) {
+	protected DrawMap(String fileName) {
 		super(null);
 		bg = new ImageIcon(fileName);
 		w = bg.getIconWidth();
@@ -24,11 +24,11 @@ public class DrawMap extends JPanel {
 		g.drawImage(bg.getImage(), 0, 0, this);
 	}
 
-	public int getImageWidth() {
+	protected int getImageWidth() {
 		return w;
 	}
 
-	public int getImageHeight() {
+	protected int getImageHeight() {
 		return h;
 	}
 

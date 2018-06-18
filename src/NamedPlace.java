@@ -1,11 +1,11 @@
-public class NamedPlace extends Location {
+public class NamedPlace extends Position {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public NamedPlace(Coordinates coordinates, String name, Category category) {
+	protected NamedPlace(Coordinates coordinates, String name, Category category) {
 		super(coordinates, name, category);
 	}
 
