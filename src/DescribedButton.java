@@ -9,7 +9,7 @@ public class DescribedButton extends JPanel {
 	private JTextField nameField = new JTextField(10);
 	private JTextField descriptionField = new JTextField(10);
 
-	protected DescribedButton() {
+	public DescribedButton() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JPanel row1 = new JPanel();
 		row1.add(new JLabel("Name:"));
@@ -25,7 +25,7 @@ public class DescribedButton extends JPanel {
 		return nameField.getText();
 	}
 
-	protected String getDescription() {
+	public String getDescription() {
 		return descriptionField.getText();
 	}
 

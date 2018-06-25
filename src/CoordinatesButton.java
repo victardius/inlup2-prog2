@@ -9,7 +9,7 @@ class CoordinatesButton extends JPanel {
 	private JTextField xCoordinate = new JTextField(3);
 	private JTextField yCoordinate = new JTextField(3);
 
-	protected CoordinatesButton() {
+	public CoordinatesButton() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JPanel row1 = new JPanel();
 		row1.add(new JLabel("X:"));
@@ -21,11 +21,11 @@ class CoordinatesButton extends JPanel {
 		add(row2);
 	}
 
-	protected int getXCoordinate() {
+	public int getXCoordinate() {
 		return Integer.parseInt(xCoordinate.getText());
 	}
 
-	protected int getYCoordinate() {
+	public int getYCoordinate() {
 		return Integer.parseInt(yCoordinate.getText());
 	}
 }

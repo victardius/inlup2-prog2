@@ -104,12 +104,14 @@ public class GUIArchive extends JFrame {
 				}
 			}
 			in.close();
+			gui.repaint();
 		} catch (FileNotFoundException e) {
 			JOptionPane.showMessageDialog(gui, e, "File not found or missing: ", JOptionPane.ERROR_MESSAGE);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(gui, e);
-		}catch (NullPointerException e) {
-			JOptionPane.showMessageDialog(gui, "Map must be loaded first", "No map available", JOptionPane.ERROR_MESSAGE);
+		} catch (NullPointerException e) {
+			JOptionPane.showMessageDialog(gui, "Map must be loaded first", "No map available",
+					JOptionPane.ERROR_MESSAGE);
 			gui.setSaved(true);
 		}
 	}

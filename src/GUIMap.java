@@ -30,7 +30,7 @@ public class GUIMap extends JFrame {
 	private JTextField searchField;
 	private String searchName;
 
-	protected GUIMap() {
+	public GUIMap() {
 		Box divideNorth = new Box(BoxLayout.PAGE_AXIS);
 		add(divideNorth, BorderLayout.NORTH);
 
@@ -109,7 +109,7 @@ public class GUIMap extends JFrame {
 		}
 	}
 
-	protected void setMap(String fileName) {
+	public void setMap(String fileName) {
 		if (map != null) {
 			remove(scroll);
 		}
@@ -140,17 +140,19 @@ public class GUIMap extends JFrame {
 
 	}
 
-	public void addToLists(Position place) {
+	private void addToLists(Position place) {
 		saved = false;
-		if (locationNames.containsKey(place.getName().toLowerCase())) {
-			locationNames.get(place.getName().toLowerCase()).add(place);
-		} else {
-			Collection<Position> list = new ArrayList<>();
-			list.add(place);
-			locationNames.put(place.getName().toLowerCase(), list);
-		}
+		addToNamedList(place);
 
 		locationCoordinates.put(place.getCoordinates(), place);
+
+		addToCategoryList(place);
+
+		paintLocation(place);
+		placingLocation = false;
+	}
+
+	private void addToCategoryList(Position place) {
 		Category c = place.getCategory();
 
 		if (locationCategory.containsKey(c))
@@ -160,12 +162,19 @@ public class GUIMap extends JFrame {
 			list.add(place);
 			locationCategory.put(c, list);
 		}
-
-		paintLocation(place);
-		placingLocation = false;
 	}
 
-	public void removeLocation(Position l) {
+	private void addToNamedList(Position place) {
+		if (locationNames.containsKey(place.getName().toLowerCase())) {
+			locationNames.get(place.getName().toLowerCase()).add(place);
+		} else {
+			Collection<Position> list = new ArrayList<>();
+			list.add(place);
+			locationNames.put(place.getName().toLowerCase(), list);
+		}
+	}
+
+	private void removeLocation(Position l) {
 		locationNames.remove(l.getName());
 		locationCoordinates.remove(l.getCoordinates());
 		locationCategory.get(l.getCategory()).remove(l);
@@ -192,7 +201,7 @@ public class GUIMap extends JFrame {
 		saved = b;
 	}
 
-	public void setMarked(Position l, boolean b) {
+	private void setMarked(Position l, boolean b) {
 		if (b) {
 			selectionList.remove(l);
 			l.setBorder(null);
@@ -202,9 +211,12 @@ public class GUIMap extends JFrame {
 		}
 	}
 
-	public void clearMarked() {
-		for (Position l : selectionList) {
+	public void hideMarked() {
+		Collection<Position> list = new ArrayList<>();
+		list.addAll(selectionList);
+		for (Position l : list) {
 			setMarked(l, true);
+			l.setDisplayed(false);
 		}
 		selectionList.clear();
 	}
@@ -218,7 +230,7 @@ public class GUIMap extends JFrame {
 		repaint();
 	}
 
-	class NewPositionListener implements ActionListener {
+	private class NewPositionListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -231,7 +243,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class GetMousePosition extends MouseAdapter {
+	private class GetMousePosition extends MouseAdapter {
 
 		@Override
 		public void mouseClicked(MouseEvent mev) {
@@ -271,9 +283,10 @@ public class GUIMap extends JFrame {
 		String name = JOptionPane.showInputDialog(GUIMap.this, "Name", "Named location", JOptionPane.QUESTION_MESSAGE);
 		if (name == null)
 			return;
-		if (!name.trim().isEmpty())
+		if (!name.trim().isEmpty()) {
 			addNamedToLists(coordinates, name, category);
-		else
+			repaint();
+		} else
 			JOptionPane.showMessageDialog(mapArea, "Name can't be empty", "Invalid input", JOptionPane.ERROR_MESSAGE);
 	}
 
@@ -286,16 +299,17 @@ public class GUIMap extends JFrame {
 		String description = described.getDescription();
 		String name = described.getName();
 		if (!name.trim().isEmpty())
-			if (!description.trim().isEmpty())
+			if (!description.trim().isEmpty()) {
 				addDescribedToLists(coordinates, name, category, description);
-			else
+				repaint();
+			} else
 				JOptionPane.showMessageDialog(mapArea, "Description can't be empty", "Invalid input",
 						JOptionPane.ERROR_MESSAGE);
 		else
 			JOptionPane.showMessageDialog(mapArea, "Name can't be empty", "Invalid input", JOptionPane.ERROR_MESSAGE);
 	}
 
-	class MarkerMouseActions extends MouseAdapter {
+	private class MarkerMouseActions extends MouseAdapter {
 
 		@Override
 		public void mouseClicked(MouseEvent mev) {
@@ -320,15 +334,7 @@ public class GUIMap extends JFrame {
 	}
 
 	private void displayLocationInfo(Position l) {
-		if (l instanceof NamedPlace) {
-			JOptionPane.showMessageDialog(mapArea,
-					"Name: " + l.getName() + "\n Coordinates: " + l.getCoordinatesToString());
-		} else {
-			l = (DescribedPlace) l;
-			String[] outprint = l.toString().split(",");
-			JOptionPane.showMessageDialog(mapArea, "Name: " + outprint[4] + "\n Coordinates: " + outprint[2] + ", "
-					+ outprint[3] + "\n Description: " + outprint[5]);
-		}
+		JOptionPane.showMessageDialog(mapArea, l.printInfo());
 	}
 
 	private void paintLocation(Position marker) {
@@ -338,7 +344,6 @@ public class GUIMap extends JFrame {
 		mapArea.removeMouseListener(ml);
 		mapArea.setCursor(Cursor.getDefaultCursor());
 		categoryList.setSelectedValue(null, true);
-		repaint();
 
 	}
 
@@ -353,7 +358,7 @@ public class GUIMap extends JFrame {
 		}
 	}
 
-	class SearchListener implements ActionListener {
+	private class SearchListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -375,19 +380,16 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class HideListener implements ActionListener {
+	private class HideListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
-			for (Position l : selectionList) {
-				l.setDisplayed(false);
-			}
-			selectionList.clear();
+			hideMarked();
 		}
 
 	}
 
-	class CoordinatesListener implements ActionListener {
+	private class CoordinatesListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -400,24 +402,21 @@ public class GUIMap extends JFrame {
 
 			if (responce != JOptionPane.OK_OPTION)
 				return;
+
+			findLocation(f.getXCoordinate(), f.getYCoordinate());
+
+		}
+
+		private void findLocation(int x, int y) {
 			try {
-				int x = f.getXCoordinate();
-				int y = f.getYCoordinate();
 				System.out.println(x + " " + y);
 				Coordinates h = new Coordinates(x, y);
 				if (locationCoordinates.containsKey(h)) {
 					System.out.println("found location");
 					Position l = locationCoordinates.get(h);
 					setMarked(l, false);
-					if (l instanceof NamedPlace) {
-						JOptionPane.showMessageDialog(mapArea,
-								"Name: " + l.getName() + "\n Coordinates: " + l.getCoordinatesToString());
-					} else {
-						l = (DescribedPlace) l;
-						String[] outprint = l.toString().split(",");
-						JOptionPane.showMessageDialog(mapArea, "Name: " + outprint[4] + "\n Coordinates: " + outprint[2]
-								+ ", " + outprint[3] + "\n Description: " + outprint[5]);
-					}
+					displayLocationInfo(l);
+
 				} else {
 					JOptionPane.showMessageDialog(mapArea, "Location does not exist!", "Invalid location",
 							JOptionPane.ERROR_MESSAGE);
@@ -429,7 +428,7 @@ public class GUIMap extends JFrame {
 		}
 	}
 
-	class RemoveListener implements ActionListener {
+	private class RemoveListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
@@ -443,18 +442,18 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class HideCategoryListener implements ActionListener {
+	private class HideCategoryListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ave) {
 
 			try {
-			for (Position l : locationCategory.get(categoryList.getSelectedValue())) {
-				l.setDisplayed(false);
-			}
+				for (Position l : locationCategory.get(categoryList.getSelectedValue())) {
+					l.setDisplayed(false);
+				}
 
-			categoryList.setSelectedValue(null, true);
-			}catch(NullPointerException e) {
+				categoryList.setSelectedValue(null, true);
+			} catch (NullPointerException e) {
 				JOptionPane.showMessageDialog(mapArea, "You have to select a category first!", "Invalid selection",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -462,24 +461,28 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class ListListener implements ListSelectionListener {
+	private class ListListener implements ListSelectionListener {
 
 		@Override
 		public void valueChanged(ListSelectionEvent lev) {
 
-			if (!lev.getValueIsAdjusting()) {
+			try {
+				if (!lev.getValueIsAdjusting()) {
 
-				for (Position l : locationCategory.get(categoryList.getSelectedValue())) {
-					l.setDisplayed(true);
+					for (Position l : locationCategory.get(categoryList.getSelectedValue())) {
+						l.setDisplayed(true);
+					}
+
 				}
-
+			} catch (NullPointerException e) {
+				// för att undvika att den gör något när ingen karta är laddad
 			}
 
 		}
 
 	}
 
-	class FocusingListener implements FocusListener {
+	private class FocusingListener implements FocusListener {
 
 		@Override
 		public void focusGained(FocusEvent fev) {
@@ -494,7 +497,7 @@ public class GUIMap extends JFrame {
 
 	}
 
-	class CloseWindowListener extends WindowAdapter {
+	private class CloseWindowListener extends WindowAdapter {
 
 		public void windowClosing(WindowEvent wev) {
 			if (!saved) {

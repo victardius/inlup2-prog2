@@ -3,16 +3,16 @@ public class Coordinates {
 
 	private int x, y;
 
-	protected Coordinates(int x, int y) {
+	public Coordinates(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	protected int getX() {
+	public int getX() {
 		return x;
 	}
 
-	protected int getY() {
+	public int getY() {
 		return y;
 	}
 

@@ -11,7 +11,7 @@ public abstract class Position extends JComponent {
 	private String name;
 	private Category category;
 
-	protected Position(Coordinates coordinates, String name, Category category) {
+	public Position(Coordinates coordinates, String name, Category category) {
 
 		name = name.trim();
 		this.coordinates = coordinates;
@@ -26,7 +26,7 @@ public abstract class Position extends JComponent {
 
 	}
 
-	protected void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int[] xes = { 0, 10, 20 };
 		int[] yes = { 0, 20, 0 };
@@ -35,7 +35,7 @@ public abstract class Position extends JComponent {
 		g.fillPolygon(xes, yes, 3);
 	}
 
-	protected void setDisplayed(boolean b) {
+	public void setDisplayed(boolean b) {
 		this.setVisible(b);
 		this.setEnabled(b);
 	}
@@ -44,18 +44,20 @@ public abstract class Position extends JComponent {
 		return name;
 	}
 
-	protected String getCoordinatesToString() {
+	public String getCoordinatesToString() {
 		return coordinates.getX() + "," + coordinates.getY();
 	}
 
-	protected Coordinates getCoordinates() {
+	public Coordinates getCoordinates() {
 		return coordinates;
 	}
 
-	protected Category getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 
 	public abstract String toString();
+
+	public abstract String printInfo();
 
 }
